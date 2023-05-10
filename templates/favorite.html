@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Favorites</title>
+    <style>
+      /* 样式可以根据自己的需求自行调整 */
+      .card {
+        display: inline-block;
+        margin: 10px;
+        border: 1px solid black;
+        padding: 10px;
+        width: 300px;
+        height: 400px;
+      }
+      .card img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+      }
+      .card h2 {
+        margin: 5px 0;
+        font-size: 1.2rem;
+      }
+      .card p {
+        margin: 5px 0;
+        font-size: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <a href="/dashboard" style="position: absolute; top: 10px; right: 10px"
+      >home</a
+    >
+    <h1>Favorites</h1>
+    {% for favorite, artwork in favorites %}
+    <a href="{{ url_for('artwork_detail', artwork_id=artwork.id) }}">
+      <div class="card">
+        <img src="{{ artwork.image }}" alt="{{ artwork.title }}" />
+        <h2>{{ artwork.title }}</h2>
+        <p>by {{ artwork.artistName }}</p>
+      </div>
+    </a>
+    {% endfor %} -->
+
+    <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Bootstrap demo</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lora&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+          crossorigin="anonymous"
+        />
+        <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+      />
+      
+        <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      </head>
+<body>
+
+  {% include 'navbar.html' %}
+  <h1 style="color: #fff; text-align: center;">Favorite Artworks</h1>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; margin: 30px;">
+      
+      {% if favorites %}
+
+        <!-- Add cards here -->
+        {% for favorite, artwork in favorites %}
+        <a href="{{ url_for('artwork_detail', artwork_id=artwork.id) }}" style="text-decoration: none;">
+        <div class="card " style=" padding: 0;">
+            <img src="{{ artwork.image }}" alt="{{ artwork.title }}" class="card-img-top">
+            <div class="card-body" style="overflow: hidden;">
+              <h5 class="card-title" style="color:#fff">{{ artwork.title }}</h5>
+              <p class="card-text" style="color:#fff">{{ artwork.artistName }}</p>
+            </div>
+          </div>
+        </a>
+        {% endfor %} 
+
+        {% else %}
+  <h5 style="color: #fff; text-align: center; margin-top: 250px;">Oops, you don't have any favorite artworks yet.</br>
+  </br> Please go to <a href="{{url_for('home')}}">homepage</a> or <a>recommendation page </a>to explore more </h5>
+  
+
+{% endif %}
+
+
+</body>
+</html>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+<h1>Recommendations</h1>
+
+{% for artwork in artworks %}
+<h2>{{ artwork.title }}</h2>
+<p>by {{ artwork.artistName }}</p>
+<p>by {{ artwork.genres }}</p>
+<p>by {{ artwork.styles }}</p>
+<p>by {{ artwork.tags }}</p>
+<p>by {{ artwork.description }}</p>
+
+<img
+  src="{{ artwork.image }}"
+  alt="{{ artwork.title }}"
+  style="max-width: 400px"
+/>
+
+{% endfor %}

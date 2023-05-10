@@ -1,0 +1,188 @@
+/* .favorite svg path {
+  fill: #ff4136;
+  stroke: #ff4136;
+} */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  font-family: "Lora", serif;
+}
+
+.carouselExample {
+  position: relative;
+  /* 其他页面样式 */
+}
+
+.signup-btn {
+  position: absolute;
+  z-index: 1000;
+  top: 10px;
+  right: 20px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+.card-container::-webkit-scrollbar {
+  display: none;
+}
+
+.title {
+  color: white;
+  margin-right: 1rem;
+}
+
+.prev-button,
+.next-button {
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  color: #666;
+  cursor: pointer;
+  display: block;
+  margin: 20px;
+}
+
+.prev-button:hover {
+  color: white;
+}
+
+.next-button:hover {
+  color: white;
+}
+
+.card-navigation {
+  display: flex;
+  align-items: center;
+}
+
+.card-container {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 1350px;
+  overflow-x: scroll;
+}
+
+.card-container a {
+  text-decoration: none;
+}
+
+.card {
+  transition: transform 0.2s ease-in-out;
+  background-color: #282828;
+  width: 18rem; /* 设置固定宽度 */
+  height: auto;
+  margin: 30px 20px 30px 20px;
+  flex-shrink: 0;
+  border-radius: 20px;
+}
+
+.card:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.card:active {
+  transform: scale(0.95);
+  border-radius: 20px;
+}
+
+.card img {
+  width: 100%; /* 图片宽度占满父容器 */
+  height: 18rem;
+  border-radius: 20px;
+
+  object-fit: cover; /* 图片等比缩放，覆盖整个容器 */
+  object-position: center center; /* 图片居中放置 */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-control {
+  margin-bottom: 20px;
+  border-width: 2px;
+  border-color: black;
+  /* color: #e6e6e6; */
+}
+
+.form-control::placeholder {
+  color: #999;
+}
+
+label {
+  font-weight: bold;
+}
+
+.favorite-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+}
+
+.heart-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.favorite-btn:hover .heart-icon {
+  transform-origin: center;
+  transform: scale(1.15);
+}
+
+.favorite-btn:active .heart-icon {
+  transform-origin: center;
+  transform: scale(0.85);
+}
+
+.details {
+  text-align: justify;
+  color: white;
+  margin-top: 100px;
+  margin-right: 40px;
+  font-size: 18px;
+  /* height: 100%;
+  overflow: scroll; */
+}
+
+.nav-item a {
+  margin-top: 3px;
+}
+
+.details::-webkit-scrollbar {
+  display: none;
+}
+
+.turn-page:hover {
+  cursor: pointer;
+}
+
+.turn-page:hover .circle {
+  stroke: none;
+  /* transform: matrix(-1 0 0 1 56 0); */
+  fill: white;
+}
+
+.turn-page:hover .path {
+  stroke: black;
+}
