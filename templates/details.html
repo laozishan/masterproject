@@ -223,73 +223,57 @@
 
       })
 
-      if (artwork.id == 1) {
-  left.style.display = "none"}
+      if (artwork.id === 1) {
+  left.style.display = 'none';
+}
+
 
     </script>
 
-
     <script>
+
+      const favoriteButton = document.getElementById("favorite-btn");
+      const heartIcon = document.getElementById("heart-icon");
+      const artworkId = favoriteButton.dataset.artworkId;
+
       document.addEventListener("DOMContentLoaded", function () {
-        checkFavoriteStatus();
+        checkFavoriteStatus(artworkId);
       });
 
-      function checkFavoriteStatus() {
-        const favoriteButton = document.getElementById("favorite-btn");
-        const heartIcon = document.getElementById("heart-icon");
-        const artworkId = favoriteButton.dataset.artworkId;
-        const userId = favoriteButton.dataset.userId;
 
-        // 从 local storage 中读取该作品的收藏状态
-        const favorites =
-          JSON.parse(localStorage.getItem(`favorites-${userId}`)) || {};
-        if (favorites[artworkId]) {
-          heartIcon.setAttribute("fill", "#FF2B2B");
-          heartIcon.setAttribute("stroke", "#FF2B2B");
-        } else {
-          heartIcon.setAttribute("fill", "none");
-          heartIcon.setAttribute("stroke", "white");
-        }
+
+
+      function checkFavoriteStatus(artworkId) {
+
+  fetch(`/check_favorite/${artworkId}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'favorited') {
+        heartIcon.setAttribute("fill", "#FF2B2B");
+        heartIcon.setAttribute("stroke", "#FF2B2B");
+      } else {
+        heartIcon.setAttribute("fill", "none");
+        heartIcon.setAttribute("stroke", "white");
       }
+    })
+    .catch(error => console.error(error));
+}
 
-      function toggleFavorite() {
-        const favoriteButton = document.getElementById("favorite-btn");
-        const heartIcon = document.getElementById("heart-icon");
-        const artworkId = favoriteButton.dataset.artworkId;
-        const userId = favoriteButton.dataset.userId;
 
-        // 从 local storage 中读取所有作品的收藏状态
-        const favorites =
-          JSON.parse(localStorage.getItem(`favorites-${userId}`)) || {};
-        if (favorites[artworkId]) {
-          delete favorites[artworkId];
-          heartIcon.setAttribute("fill", "none");
-          heartIcon.setAttribute("stroke", "white");
-        } else {
-          favorites[artworkId] = true;
-          heartIcon.setAttribute("fill", "#FF2B2B");
-          heartIcon.setAttribute("stroke", "#FF2B2B");
-        }
-
-        // 将更新后的收藏状态保存到 local storage 中
-        localStorage.setItem(`favorites-${userId}`, JSON.stringify(favorites));
-
-        // 发送收藏状态到服务端
-        fetch(`/toggle_favorite/${artworkId}`, { method: "POST" })
-          .then((response) => {
-            if (response.ok) {
-              return response.json();
-            } else {
-              throw new Error("Network response was not ok.");
-            }
-          })
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+function toggleFavorite() {
+  fetch(`/toggle_favorite/${artworkId}`, { method: 'POST' })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "favorited") {
+        heartIcon.setAttribute("fill", "#FF2B2B");
+        heartIcon.setAttribute("stroke", "#FF2B2B");
+      } else {
+        heartIcon.setAttribute("fill", "none");
+        heartIcon.setAttribute("stroke", "white");
       }
+    });
+}
+
     </script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>

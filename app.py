@@ -219,29 +219,6 @@ def user_status():
 
 
 
-
-@app.route('/toggle_favorite/<int:artwork_id>', methods=['GET', 'POST'])
-@login_required
-def toggle_favorite(artwork_id):
-    favorite = Favorite.query.filter_by(user_id=current_user.id, artwork_id=artwork_id).first()
-    if request.method == 'POST':
-        if not favorite:
-            favorite = Favorite(user_id=current_user.id, artwork_id=artwork_id, favorite=True)
-            db.session.add(favorite)
-            db.session.commit()
-            return jsonify({'status': 'favorited'})
-        else:
-            db.session.delete(favorite)
-            db.session.commit()
-            return jsonify({'status': 'unfavorited'})
-    elif request.method == 'GET':
-        if not favorite:
-            return jsonify({'status': 'unfavorited'})
-        else:
-            return jsonify({'status': 'favorited'})
-
-
-
 @app.route('/favorite')
 @login_required
 def favorite():
@@ -253,6 +230,34 @@ def favorite():
     )
     return render_template('favorite.html', favorites=favorites)
 
+
+
+
+@app.route('/check_favorite/<int:artwork_id>')
+def check_favorite(artwork_id):
+    favorite = Favorite.query.filter_by(user_id=current_user.id, artwork_id=artwork_id).first()
+    if favorite:
+        return jsonify({'status': 'favorited'})
+    else:
+        return jsonify({'status': 'unfavorited'})
+
+
+
+
+
+@app.route('/toggle_favorite/<int:artwork_id>', methods=['POST'])
+@login_required
+def toggle_favorite(artwork_id):
+    favorite = Favorite.query.filter_by(user_id=current_user.id, artwork_id=artwork_id).first()
+    if not favorite:
+        favorite = Favorite(user_id=current_user.id, artwork_id=artwork_id, favorite=True)
+        db.session.add(favorite)
+        db.session.commit()
+        return jsonify({'status': 'favorited'})
+    else:
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify({'status': 'unfavorited'})
 
 
 
@@ -269,18 +274,9 @@ tfidf_matrix = vectorizer.fit_transform(corpus)
 
 @app.route('/artworks/<int:artwork_id>')
 def artwork_detail(artwork_id):
-    artwork = Artwork.query.get_or_404(artwork_id)
-    favorite_status = False
-    user_id = None
-    if current_user.is_authenticated:
-        user_id = current_user.id
-        favorite = Favorite.query.filter_by(user_id=current_user.id, artwork_id=artwork_id).first()
-        if favorite:
-            favorite_status = True
-    else:
-        flash('Please log in to add this artwork to your favorites!', 'warning')
-    # 计算给定 Artwork id 的 TF-IDF 向量
     artwork = Artwork.query.get(artwork_id)
+    
+    # 计算给定 Artwork id 的 TF-IDF 向量
     query =  artwork.title+ " " +  artwork.artistName +" " + artwork.genres + " " + artwork.styles
     query_vec = vectorizer.transform([query])
 
@@ -294,11 +290,7 @@ def artwork_detail(artwork_id):
     similar_artworks = [artworks[i] for i in top_indices]
     
     
-    return render_template('details.html', artwork=artwork, favorite_status=favorite_status,user_id=user_id,similar_artworks=similar_artworks)
-
-
-
-
+    return render_template('details.html', artwork=artwork, similar_artworks=similar_artworks)
 
 
 
@@ -314,9 +306,6 @@ def extract_title(artwork):
     title_words = set(artwork.title.split(" "))
     title_words_without_stopwords = set([word for word in title_words if word.lower() not in stop_words])
     return title_words_without_stopwords
-
-
-
 
 
 
