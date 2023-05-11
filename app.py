@@ -12,6 +12,9 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 import re
 from sklearn.metrics.pairwise import cosine_similarity
+from nltk.corpus import stopwords
+from collections import defaultdict
+
 
 
 
@@ -254,7 +257,6 @@ def favorite():
 
 
 
-
 # 获取所有 Artwork 对象的 genres 和 styles 字段，组合成一个字符
 
 artworks = Artwork.query.all()
@@ -298,6 +300,118 @@ def artwork_detail(artwork_id):
 
 
 
+
+
+
+
+
+
+# 获取英语停用词列表
+stop_words = set(stopwords.words('english'))
+
+# 在提取作品标题时过滤停用词
+def extract_title(artwork):
+    title_words = set(artwork.title.split(" "))
+    title_words_without_stopwords = set([word for word in title_words if word.lower() not in stop_words])
+    return title_words_without_stopwords
+
+
+
+
+
+
+
+def extract_user_preferences(user_id):
+    # Initialize user preferences dictionary
+    user_prefs = {
+        'artist': defaultdict(int),
+        'genre': defaultdict(int),
+        'style': defaultdict(int),
+        'title': defaultdict(int)
+    }
+
+    # Get user's favorites
+    favorites = Favorite.query.filter_by(user_id=user_id, favorite=True).all()
+
+    # Extract preferences from favorites
+    for favorite in favorites:
+        
+        artwork = Artwork.query.get(favorite.artwork_id)
+        artwork_title = extract_title(artwork)
+        artwork_artist = set(artwork.artistName.split(", "))
+        artwork_genres = set(artwork.genres.split(", "))
+        artwork_styles = set(artwork.styles.split(", "))
+
+
+
+        for title_word in artwork_title:
+            user_prefs['title'][title_word] += 1
+
+        for artist in artwork_artist:
+            user_prefs['artist'][artist] += 1
+
+        for genre in artwork_genres:
+            user_prefs['genre'][genre] += 1
+
+        for style in artwork_styles:
+            user_prefs['style'][style] += 1
+
+        
+    print(user_prefs)
+
+    return user_prefs
+
+def recommend_artwork(user_prefs, weight_artist=1, weight_genre=1, weight_style=1, weight_title=1):
+    # Initialize artwork scores dictionary
+    artwork_scores = defaultdict(int)
+    user_id=current_user.id
+
+    # Loop over all artwork in database
+    for artwork in Artwork.query.all():
+        # Skip artwork that user has already favorited
+        if Favorite.query.filter_by(user_id=user_id, artwork_id=artwork.id, favorite=True).first():
+            continue
+
+        artwork_title = extract_title(artwork)
+        artwork_artist = set(artwork.artistName.split(", "))
+        artwork_genres = set(artwork.genres.split(", "))
+        artwork_styles = set(artwork.styles.split(", "))
+        
+
+        # Calculate Jaccard similarity scores
+        artist_score = len(user_prefs['artist'].keys() & artwork_artist) / len(user_prefs['artist'].keys() | artwork_artist)
+        genre_score = len(user_prefs['genre'].keys() & artwork_genres) / len(user_prefs['genre'].keys() | artwork_genres)
+        style_score = len(user_prefs['style'].keys() & artwork_styles) / len(user_prefs['style'].keys() | artwork_styles)
+        title_score = len(user_prefs['title'].keys() & artwork_title) / len(user_prefs['title'].keys() | artwork_title)
+
+        
+
+        # Calculate overall artwork score based on weighted similarity scores
+        overall_score = (weight_artist * artist_score) + (weight_genre * genre_score) + (weight_style * style_score) + (weight_title * title_score)
+
+        # Add artwork score to dictionary
+        artwork_scores[artwork] = overall_score
+
+    # Sort artwork by score, from highest to lowest
+    recommended_artwork = sorted(artwork_scores.items(), key=lambda x: x[1], reverse=True)[0:30]
+
+
+    return [artwork for artwork, _ in recommended_artwork]
+
+@app.route('/recommendations')
+@login_required
+def recommendations():
+    # Get user id from query parameters
+    user_id = request.args.get('user_id')
+
+    # Extract user preferences from favorites
+    user_prefs = extract_user_preferences(user_id)
+
+    # Get recommended artwork based on user preferences
+    recommended_artwork = recommend_artwork(user_prefs, weight_artist=1, weight_genre=1, weight_style=1, weight_title=1)
+
+
+    return render_template('recommendations.html', recommended_artwork=recommended_artwork)
 
 
 
