@@ -186,3 +186,65 @@ label {
 .turn-page:hover .path {
   stroke: black;
 }
+
+.slider {
+  height: 20px;
+  width: 100%;
+  margin: 30px 0 70px 0;
+  border-radius: 10px;
+  position: relative;
+}
+
+.slider-text {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: -20px;
+  width: 100%;
+  font-weight: bold;
+  font-size: 16px;
+  color: #000;
+}
+
+.slider-text span:first-child {
+  text-align: left;
+}
+
+.slider-text span:last-child {
+  text-align: right;
+}
+
+.slider-input {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 5px;
+  background-color: lightgray;
+  outline: none;
+  border-radius: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 15px;
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 21px;
+  height: 21px;
+
+  background-color: black;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.ProgressBar {
+  width: 50%;
+  height: 5px;
+  background-color: #000;
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 15px;
+}

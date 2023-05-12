@@ -298,14 +298,14 @@ def artwork_detail(artwork_id):
 
 
 
-# 获取英语停用词列表
-stop_words = set(stopwords.words('english'))
+# # 获取英语停用词列表
+# stop_words = set(stopwords.words('english'))
 
-# 在提取作品标题时过滤停用词
-def extract_title(artwork):
-    title_words = set(artwork.title.split(" "))
-    title_words_without_stopwords = set([word for word in title_words if word.lower() not in stop_words])
-    return title_words_without_stopwords
+# # 在提取作品标题时过滤停用词
+# def extract_title(artwork):
+#     title_words = set(artwork.title.split(" "))
+#     title_words_without_stopwords = set([word for word in title_words if word.lower() not in stop_words])
+#     return title_words_without_stopwords
 
 
 
@@ -316,7 +316,7 @@ def extract_user_preferences(user_id):
         'artist': defaultdict(int),
         'genre': defaultdict(int),
         'style': defaultdict(int),
-        'title': defaultdict(int)
+        # 'title': defaultdict(int)
     }
 
     # Get user's favorites
@@ -326,15 +326,15 @@ def extract_user_preferences(user_id):
     for favorite in favorites:
         
         artwork = Artwork.query.get(favorite.artwork_id)
-        artwork_title = extract_title(artwork)
+        # artwork_title = extract_title(artwork)
         artwork_artist = set(artwork.artistName.split(", "))
         artwork_genres = set(artwork.genres.split(", "))
         artwork_styles = set(artwork.styles.split(", "))
 
 
 
-        for title_word in artwork_title:
-            user_prefs['title'][title_word] += 1
+        # for title_word in artwork_title:
+        #     user_prefs['title'][title_word] += 1
 
         for artist in artwork_artist:
             user_prefs['artist'][artist] += 1
@@ -350,7 +350,7 @@ def extract_user_preferences(user_id):
 
     return user_prefs
 
-def recommend_artwork(user_prefs, weight_artist=1, weight_genre=1, weight_style=1, weight_title=1):
+def recommend_artwork(user_prefs, weight_artist, weight_genre, weight_style):
     # Initialize artwork scores dictionary
     artwork_scores = defaultdict(int)
     user_id=current_user.id
@@ -361,7 +361,7 @@ def recommend_artwork(user_prefs, weight_artist=1, weight_genre=1, weight_style=
         if Favorite.query.filter_by(user_id=user_id, artwork_id=artwork.id, favorite=True).first():
             continue
 
-        artwork_title = extract_title(artwork)
+        # artwork_title = extract_title(artwork)
         artwork_artist = set(artwork.artistName.split(", "))
         artwork_genres = set(artwork.genres.split(", "))
         artwork_styles = set(artwork.styles.split(", "))
@@ -371,18 +371,17 @@ def recommend_artwork(user_prefs, weight_artist=1, weight_genre=1, weight_style=
         artist_score = len(user_prefs['artist'].keys() & artwork_artist) / len(user_prefs['artist'].keys() | artwork_artist)
         genre_score = len(user_prefs['genre'].keys() & artwork_genres) / len(user_prefs['genre'].keys() | artwork_genres)
         style_score = len(user_prefs['style'].keys() & artwork_styles) / len(user_prefs['style'].keys() | artwork_styles)
-        title_score = len(user_prefs['title'].keys() & artwork_title) / len(user_prefs['title'].keys() | artwork_title)
+        # title_score = len(user_prefs['title'].keys() & artwork_title) / len(user_prefs['title'].keys() | artwork_title)
 
         
 
         # Calculate overall artwork score based on weighted similarity scores
-        overall_score = (weight_artist * artist_score) + (weight_genre * genre_score) + (weight_style * style_score) + (weight_title * title_score)
-
+        overall_score = (weight_artist * artist_score) + (weight_genre * genre_score) + (weight_style * style_score) 
         # Add artwork score to dictionary
         artwork_scores[artwork] = overall_score
 
     # Sort artwork by score, from highest to lowest
-    recommended_artwork = sorted(artwork_scores.items(), key=lambda x: x[1], reverse=True)[0:30]
+    recommended_artwork = sorted(artwork_scores.items(), key=lambda x: x[1], reverse=True)
 
 
     return [artwork for artwork, _ in recommended_artwork]
@@ -392,15 +391,22 @@ def recommend_artwork(user_prefs, weight_artist=1, weight_genre=1, weight_style=
 def recommendations():
     # Get user id from query parameters
     user_id = request.args.get('user_id')
+    print(user_id)
 
     # Extract user preferences from favorites
     user_prefs = extract_user_preferences(user_id)
+  # 获取权重参数，如果没有则使用默认值 50
+    weight_artist = int(request.args.get('weight_artist', 50))
+    weight_genre = int(request.args.get('weight_genre', 50))
+    weight_style = int(request.args.get('weight_style', 50))
+    print(weight_artist,weight_genre,weight_style)
 
-    # Get recommended artwork based on user preferences
-    recommended_artwork = recommend_artwork(user_prefs, weight_artist=1, weight_genre=1, weight_style=1, weight_title=1)
+        # Get recommended artwork based on user preferences and weights
+    recommended_artwork = recommend_artwork(user_prefs, weight_artist, weight_genre, weight_style)[0:100]
 
 
-    return render_template('recommendations.html', recommended_artwork=recommended_artwork)
+
+    return render_template('recommendations.html', recommended_artwork=recommended_artwork,user_prefs=user_prefs)
 
 
 

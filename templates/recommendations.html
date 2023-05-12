@@ -1,48 +1,315 @@
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Bootstrap demo</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Lora&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
-          crossorigin="anonymous"
-        />
-        <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-      />
-      
-        <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
-        <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-      </head>
-<body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recommendation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
 
-  {% include 'navbar.html' %}
-  <h1 style="color: #fff; text-align: center;">Recommended Artworks</h1>
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; margin: 30px;">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+    <div style="display: flex;flex-wrap: wrap;margin: 30px 200px 30px 200px; justify-content: space-between;">
+      <h1 style="color: #fff;">Recommended Artworks</h1>
+  
+      <button style="background-color: transparent; border: 1px solid white; color: #fff;border-radius: 5px;padding-left: 20px; padding-right: 20px;" data-toggle="modal" data-target="#weightModal">
+        <span>
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6655 25.1832C8.71066 24.6012 6.97064 23.5207 5.59284 22.089C6.10684 21.4799 6.41659 20.6928 6.41659 19.8334C6.41659 17.9004 4.84958 16.3334 2.91659 16.3334C2.79966 16.3334 2.68406 16.3391 2.57008 16.3503C2.4148 15.5911 2.33325 14.8051 2.33325 14C2.33325 12.7805 2.52037 11.6047 2.86746 10.4997C2.88381 10.4999 2.90018 10.5 2.91659 10.5C4.84958 10.5 6.41659 8.93301 6.41659 7.00002C6.41659 6.4451 6.28744 5.92039 6.0576 5.45419C7.40679 4.19967 9.05354 3.26081 10.8803 2.75513C11.4592 3.88974 12.6388 4.6667 13.9999 4.6667C15.361 4.6667 16.5407 3.88974 17.1195 2.75513C18.9463 3.26081 20.593 4.19967 21.9422 5.45419C21.7124 5.92039 21.5833 6.4451 21.5833 7.00002C21.5833 8.93301 23.1503 10.5 25.0833 10.5C25.0996 10.5 25.116 10.4999 25.1324 10.4997C25.4795 11.6047 25.6666 12.7805 25.6666 14C25.6666 14.8051 25.585 15.5911 25.4298 16.3503C25.3158 16.3391 25.2002 16.3334 25.0833 16.3334C23.1503 16.3334 21.5833 17.9004 21.5833 19.8334C21.5833 20.6928 21.893 21.4799 22.407 22.089C21.0292 23.5207 19.2892 24.6012 17.3344 25.1832C16.8832 23.772 15.5609 22.75 13.9999 22.75C12.4389 22.75 11.1166 23.772 10.6655 25.1832Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M14.0001 18.0833C16.2552 18.0833 18.0834 16.2551 18.0834 14C18.0834 11.7448 16.2552 9.91663 14.0001 9.91663C11.7449 9.91663 9.91675 11.7448 9.91675 14C9.91675 16.2551 11.7449 18.0833 14.0001 18.0833Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            
+        </span>
+        Set up weight
+      </button>
+   
+    </div>
 
-        <!-- Add cards here -->
-        {% for artwork in recommended_artwork %}
-        <a href="{{ url_for('artwork_detail', artwork_id=artwork.id) }}" style="text-decoration: none;">
-        <div class="card " style=" padding: 0;">
-            <img src="{{ artwork.image }}" alt="{{ artwork.title }}" class="card-img-top">
-            <div class="card-body" style="overflow: hidden;">
-              <h5 class="card-title" style="color:#fff">{{ artwork.title }}</h5>
-              <p class="card-text" style="color:#fff">{{ artwork.artistName }}</p>
-            </div>
+
+
+
+
+    <div
+      style="
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 30px;
+      "
+    >
+      <!-- Add cards here -->
+      {% for artwork in recommended_artwork %}
+      <a
+        href="{{ url_for('artwork_detail', artwork_id=artwork.id) }}"
+        style="text-decoration: none"
+      >
+        <div class="card" style="padding: 0">
+          <img
+            src="{{ artwork.image }}"
+            alt="{{ artwork.title }}"
+            class="card-img-top"
+          />
+          <div class="card-body" style="overflow: hidden">
+            <h5 class="card-title" style="color: #fff">{{ artwork.title }}</h5>
+            <p class="card-text" style="color: #fff">
+              {{ artwork.artistName }}
+            </p>
           </div>
-        </a>
-        {% endfor %} 
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- model-->
+    <div
+    class="modal fade"
+    id="weightModal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <!-- 模态框头部 -->
+        <div class="modal-header">
+          <h5 class="modal-title" style="font-weight: bold">
+            Get Recommendation Based on
+          </h5>
+        </br>
+          
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            style="
+              font-size: 28px;
+              border: none;
+              background-color: transparent;
+              font-weight: bold;
+            "
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <form onsubmit="return false;">
+            <input type="hidden" id="user-id" value="{{ current_user.id }}">
+            <div id="preference-form">
+              <div class="slider">
+                <div class="slider-text">
+                <span>Artists I liked before</span>
+                  <span id="artistValue">50%</span>
+                </div>
+                
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  class="slider-input"
+                  id="artistSlider"
+                />
+                <div class="ProgressBar" id="artistProgress"></div>
+              </div>
 
 
-</body>
+
+              <div class="slider">
+                <div class="slider-text">
+                <span>Genres I liked before</span>
+                  <span id="genreValue"></span>
+                </div>
+                
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  class="slider-input"
+                  id="genreSlider"
+                />
+                <div class="ProgressBar" id="genreProgress"></div>
+              </div>
+
+
+
+              <div class="slider" style="margin-bottom: 40px;">
+                <div class="slider-text">
+                <span>Styles I liked before</span>
+                  <span id="styleValue"></span>
+                </div>
+                
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  class="slider-input"
+                  id="styleSlider"
+                />
+                <div class="ProgressBar" id="styleProgress"></div>
+              </div>
+
+            </div>
+
+              <button
+                type="submit"
+                onclick="submitRecommendationForm()"
+                id="save-btn"
+                class="btn btn-primary btn-dark"
+                style="margin-top: 10px; margin-bottom: 20px; width: 100%"
+              >
+                Save
+              </button>
+              <a id="toggle-preference" style="cursor: pointer;text-decoration: underline;">See my preference</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+ <!-- model-->
+ <div
+ class="modal fade"
+ style="display: none;"
+ id="preference"
+ tabindex="-1"
+ role="dialog"
+ aria-hidden="true"
+>
+ <div class="modal-dialog modal-dialog-centered" role="document">
+   <div class="modal-content">
+     <!-- 模态框头部 -->
+     <div class="modal-header">
+       <h5 class="modal-title" style="font-weight: bold">
+         My preference
+       </h5>
+     </br>
+       
+       <button
+         type="button"
+         class="close"
+         data-dismiss="modal"
+         style="
+           font-size: 28px;
+           border: none;
+           background-color: transparent;
+           font-weight: bold;
+         "
+         aria-label="Close"
+       >
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+
+     <div class="modal-body">
+      <div>
+      <table>
+        {% for category, preferences in user_prefs.items() %}
+        <tr>
+            <td>{{ category }}</td>
+            <td>
+                <ul>
+                    {% for preference, count in preferences.items() %}
+                    <li>{{ preference }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}    
+    </table>
+  </div>
+  <div style="margin-top: 20px;">
+
+    <a id="toggle-weight" style="cursor: pointer;text-decoration: underline;" > Set up weight</a> 
+  </div>
+ </div>
+</div>
+ </div>
+</div>
+
+
+
+<script>
+// 监听toggle-weight点击事件
+$("#toggle-weight").click(function(){
+  $('#preference').modal('hide'); // 隐藏preference模态框
+  $('#weightModal').modal('show'); // 显示weight模态框
+});
+
+// 监听toggle-preference点击事件
+$("#toggle-preference").click(function(){
+  $('#weightModal').modal('hide'); // 隐藏weight模态框
+  $('.modal-backdrop').remove();
+  $('#preference').modal('show'); // 显示preference模态框
+});
+</script>
+
+
+
+  <script>
+    function setupSlider(slider, value, progress) {
+      value.innerHTML = slider.value + "%";
+      slider.oninput = function() {
+        value.innerHTML = this.value + "%";
+        progress.style.width = this.value + "%";
+      };
+    }
+    
+    const artist_slider = document.getElementById('artistSlider');
+    const artist_value = document.getElementById('artistValue');
+    const artist_progress = document.getElementById('artistProgress');
+    setupSlider(artist_slider, artist_value, artist_progress);
+    
+    const genre_slider = document.getElementById('genreSlider');
+    const genre_value = document.getElementById('genreValue');
+    const genre_progress = document.getElementById('genreProgress');
+    setupSlider(genre_slider, genre_value, genre_progress);
+    
+    const style_slider = document.getElementById('styleSlider');
+    const style_value = document.getElementById('styleValue');
+    const style_progress = document.getElementById('styleProgress');
+    setupSlider(style_slider, style_value, style_progress);
+
+
+
+    function submitRecommendationForm() {
+  const weightArtist = artist_slider.value;
+  const weightGenre = genre_slider.value;
+  const weightStyle = style_slider.value;
+ const userId = document.getElementById('user-id').value;
+  const url = `/recommendations?user_id=${userId}&weight_artist=${weightArtist}&weight_genre=${weightGenre}&weight_style=${weightStyle}`;
+  window.location.href = url;
+}
+
+
+    </script>
+
+
+
+
+
+  </body>
 </html>
