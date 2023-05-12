@@ -239,7 +239,6 @@ label {
 }
 
 .ProgressBar {
-  width: 50%;
   height: 5px;
   background-color: #000;
   border-radius: 10px;

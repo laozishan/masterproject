@@ -299,13 +299,45 @@ $("#toggle-preference").click(function(){
   const weightArtist = artist_slider.value;
   const weightGenre = genre_slider.value;
   const weightStyle = style_slider.value;
+
+  localStorage.setItem('weight_artist', weightArtist);
+  localStorage.setItem('weight_genre', weightGenre);
+  localStorage.setItem('weight_style', weightStyle);
+
+
+
  const userId = document.getElementById('user-id').value;
   const url = `/recommendations?user_id=${userId}&weight_artist=${weightArtist}&weight_genre=${weightGenre}&weight_style=${weightStyle}`;
   window.location.href = url;
+
 }
-
-
     </script>
+
+
+<script>
+  $(document).ready(function() {
+  // Get values from localStorage
+  var artistValue = localStorage.getItem('weight_artist') || 50;
+  var genreValue = localStorage.getItem('weight_genre') || 50;
+  var styleValue = localStorage.getItem('weight_style') || 50;
+
+  // Set slider values
+  $('#artistSlider').val(artistValue);
+  $('#genreSlider').val(genreValue);
+  $('#styleSlider').val(styleValue);
+
+  // Set progress bar widths
+  $('#artistProgress').css('width', artistValue + '%');
+  $('#genreProgress').css('width', genreValue + '%');
+  $('#styleProgress').css('width', styleValue + '%');
+
+  // Set slider value display
+  $('#artistValue').text(artistValue + '%');
+  $('#genreValue').text(genreValue + '%');
+  $('#styleValue').text(styleValue + '%');
+});
+
+</script>
 
 
 
