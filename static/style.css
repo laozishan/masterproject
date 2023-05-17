@@ -252,15 +252,15 @@ label {
   cursor: pointer;
 }
 
-.ProgressBar {
+/* .ProgressBar {
   height: 5px;
   background-color: #000;
   border-radius: 10px;
   position: absolute;
   top: 0;
-  left: 0;
+  right: 50%;
   margin-top: 15px;
-}
+} */
 
 .tag-list {
   list-style-type: none;
@@ -278,14 +278,32 @@ label {
 
 .tag-artist {
   background-color: #ffe0e6;
+  color: #333;
 }
 
 .tag-genre {
   background-color: #fff5cc;
+  color: #333;
 }
 
 .tag-style {
   background-color: #e1f5fe;
+  color: #333;
+}
+
+.tag1-artist {
+  background-color: rgba(255, 224, 230, 0.25);
+  color: #ffe0e6;
+}
+
+.tag1-genre {
+  background-color: rgba(255, 245, 204, 0.25);
+  color: #fff5cc;
+}
+
+.tag1-style {
+  background-color: rgba(225, 245, 254, 0.25);
+  color: #e1f5fe;
 }
 
 .category-title {

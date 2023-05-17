@@ -78,10 +78,10 @@
             class="card-img-top"
           />
           <div class="card-body" style="overflow: hidden">
-            <div class="tags" id="tags-{{ artwork.id }}"></div>
             <h5 class="card-title" style="color: #fff; margin-top: 10px;">{{ artwork.title }}</h5>
             <!-- <p class="card-text" style="color: #fff">
               {{ artwork.artistName }} -->
+              <div class="tags" id="tags-{{ artwork.id }}"></div>
             </p>
           </div>
         </div>
@@ -128,57 +128,62 @@
             <div id="preference-form">
               <div class="slider">
                 <div class="slider-text">
+                <span>Totally different artists</span>
+                <span id="artistValue">0</span>
                 <span>Artists I liked before</span>
-                  <span id="artistValue">50%</span>
                 </div>
                 
                 <input
                   type="range"
-                  min="0"
-                  max="100"
+                  min="-50"
+                  max="50"
                   step="1"
                   class="slider-input"
                   id="artistSlider"
                 />
-                <div class="ProgressBar" id="artistProgress"></div>
+
               </div>
 
 
 
               <div class="slider">
                 <div class="slider-text">
+                <span>Totally different genres</span>
+                <span id="genreValue"></span>
                 <span>Genres I liked before</span>
-                  <span id="genreValue"></span>
+
                 </div>
                 
                 <input
                   type="range"
-                  min="0"
-                  max="100"
+                  min="-50"
+                  max="50"
                   step="1"
                   class="slider-input"
                   id="genreSlider"
                 />
-                <div class="ProgressBar" id="genreProgress"></div>
+
               </div>
 
 
 
               <div class="slider" style="margin-bottom: 40px;">
                 <div class="slider-text">
+                <span>Totally different styles</span>
+                <span id="styleValue"></span>
                 <span>Styles I liked before</span>
-                  <span id="styleValue"></span>
+
                 </div>
                 
                 <input
                   type="range"
-                  min="0"
-                  max="100"
+                  min="-50"
+                  max="50"
                   step="1"
                   class="slider-input"
                   id="styleSlider"
                 />
-                <div class="ProgressBar" id="styleProgress"></div>
+
               </div>
 
             </div>
@@ -299,7 +304,37 @@ console.log(userPrefs)
 const recommended_json = JSON.parse('{{ recommended_json | tojson | safe }}');
 console.log(recommended_json)
 
-// Iterate over each recommended artwork
+// // Iterate over each recommended artwork
+// recommended_json.forEach(artwork => {
+//   // Calculate the intersection of user preferences and artwork tags
+//   const matchedTags = {
+//     artist: Object.keys(userPrefs.artist).filter(artist => artwork.artistName === artist),
+//     genre: Object.keys(userPrefs.genre).filter(genre => {
+//       const artworkGenres = artwork.genres.split(', ');
+//       return artworkGenres.includes(genre);
+//     }),
+//     style: Object.keys(userPrefs.style).filter(style => {
+//       const artworkStyles = artwork.styles.split(', ');
+//       return artworkStyles.includes(style);
+//     })
+//   };
+
+
+//   // Display the matched tags in the corresponding card
+//   const tagsContainer = document.getElementById('tags-' + artwork.id);
+//   for (const key in matchedTags) {
+//     const tags = matchedTags[key];
+//     for (let i = 0; i < tags.length; i++) {
+//       const tag = document.createElement('span');
+//       tag.className = 'tag';
+//       tag.textContent = tags[i];
+//       tagsContainer.appendChild(tag);
+//     }
+//   }
+// });
+
+
+
 recommended_json.forEach(artwork => {
   // Calculate the intersection of user preferences and artwork tags
   const matchedTags = {
@@ -314,6 +349,12 @@ recommended_json.forEach(artwork => {
     })
   };
 
+  // Get all artwork tags
+  let allTags = [
+    ...artwork.artistName.split(','),
+    ...artwork.genres.split(', '),
+    ...artwork.styles.split(', ')
+  ];
 
   // Display the matched tags in the corresponding card
   const tagsContainer = document.getElementById('tags-' + artwork.id);
@@ -321,12 +362,25 @@ recommended_json.forEach(artwork => {
     const tags = matchedTags[key];
     for (let i = 0; i < tags.length; i++) {
       const tag = document.createElement('span');
-      tag.className = 'tag';
+      tag.className = `tag tag1-${key}`;
       tag.textContent = tags[i];
       tagsContainer.appendChild(tag);
+
+      // Remove the matched tag from allTags
+      allTags = allTags.filter(tag => !matchedTags.artist.includes(tag) && !matchedTags.genre.includes(tag) && !matchedTags.style.includes(tag));
+
     }
   }
+
+  // Display remaining artwork tags
+  for (let i = 0; i < allTags.length; i++) {
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.textContent = allTags[i];
+    tagsContainer.appendChild(tag);
+  }
 });
+
 
 
 </script>
@@ -351,28 +405,27 @@ $("#toggle-preference").click(function(){
 
 
   <script>
-    function setupSlider(slider, value, progress) {
+    function setupSlider(slider, value) {
       value.innerHTML = slider.value + "%";
       slider.oninput = function() {
         value.innerHTML = this.value + "%";
-        progress.style.width = this.value + "%";
       };
     }
     
     const artist_slider = document.getElementById('artistSlider');
     const artist_value = document.getElementById('artistValue');
-    const artist_progress = document.getElementById('artistProgress');
-    setupSlider(artist_slider, artist_value, artist_progress);
+    // const artist_progress = document.getElementById('artistProgress');
+    setupSlider(artist_slider, artist_value);
     
     const genre_slider = document.getElementById('genreSlider');
     const genre_value = document.getElementById('genreValue');
-    const genre_progress = document.getElementById('genreProgress');
-    setupSlider(genre_slider, genre_value, genre_progress);
+    // const genre_progress = document.getElementById('genreProgress');
+    setupSlider(genre_slider, genre_value);
     
     const style_slider = document.getElementById('styleSlider');
     const style_value = document.getElementById('styleValue');
-    const style_progress = document.getElementById('styleProgress');
-    setupSlider(style_slider, style_value, style_progress);
+    // const style_progress = document.getElementById('styleProgress');
+    setupSlider(style_slider, style_value);
 
 
 
