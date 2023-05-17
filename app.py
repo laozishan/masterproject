@@ -12,7 +12,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 import re
 from sklearn.metrics.pairwise import cosine_similarity
-from nltk.corpus import stopwords
+
 from collections import defaultdict
 
 
@@ -218,7 +218,6 @@ def user_status():
 
 
 
-
 @app.route('/favorite')
 @login_required
 def favorite():
@@ -228,7 +227,8 @@ def favorite():
         .filter(Favorite.user_id == current_user.id, Favorite.favorite == True)
         .all()
     )
-    return render_template('favorite.html', favorites=favorites)
+    current_page='favorite'
+    return render_template('favorite.html', favorites=favorites,current_page=current_page)
 
 
 
@@ -295,17 +295,51 @@ def artwork_detail(artwork_id):
 
 
 
+@app.route('/favorite-artworks/<int:artwork_id>')
+def favorite_artwork_detail(artwork_id):
+    artwork = Artwork.query.get(artwork_id)
+    
+    # 计算给定 Artwork id 的 TF-IDF 向量
+    query =  artwork.title+ " " +  artwork.artistName +" " + artwork.genres + " " + artwork.styles
+    query_vec = vectorizer.transform([query])
+
+    # 使用 cosine_similarity 计算所有 Artwork 的 TF-IDF 向量与给定 Artwork 的 TF-IDF 向量之间的余弦相似度
+    similarity_scores = cosine_similarity(query_vec, tfidf_matrix)[0]
+
+    # 对相似度进行排序并返回前 10 个
+    top_indices = similarity_scores.argsort()[::-1][1:11]
+
+    # 返回与给定 Artwork id 相似度最高的 10 个 Artwork
+    similar_artworks = [artworks[i] for i in top_indices]
+
+    
+    
+    
+    return render_template('favorite_detail.html', artwork=artwork, similar_artworks=similar_artworks)
 
 
 
-# # 获取英语停用词列表
-# stop_words = set(stopwords.words('english'))
+@app.route('/favorite-artworks/<int:artwork_id>')
+def recommended_detail(artwork_id):
+    artwork = Artwork.query.get(artwork_id)
+    
+    # 计算给定 Artwork id 的 TF-IDF 向量
+    query =  artwork.title+ " " +  artwork.artistName +" " + artwork.genres + " " + artwork.styles
+    query_vec = vectorizer.transform([query])
 
-# # 在提取作品标题时过滤停用词
-# def extract_title(artwork):
-#     title_words = set(artwork.title.split(" "))
-#     title_words_without_stopwords = set([word for word in title_words if word.lower() not in stop_words])
-#     return title_words_without_stopwords
+    # 使用 cosine_similarity 计算所有 Artwork 的 TF-IDF 向量与给定 Artwork 的 TF-IDF 向量之间的余弦相似度
+    similarity_scores = cosine_similarity(query_vec, tfidf_matrix)[0]
+
+    # 对相似度进行排序并返回前 10 个
+    top_indices = similarity_scores.argsort()[::-1][1:11]
+
+    # 返回与给定 Artwork id 相似度最高的 10 个 Artwork
+    similar_artworks = [artworks[i] for i in top_indices]
+    
+    
+    return render_template('favorite_detail.html', artwork=artwork, similar_artworks=similar_artworks)
+
+
 
 
 
@@ -333,8 +367,6 @@ def extract_user_preferences(user_id):
 
 
 
-        # for title_word in artwork_title:
-        #     user_prefs['title'][title_word] += 1
 
         for artist in artwork_artist:
             user_prefs['artist'][artist] += 1
@@ -361,7 +393,7 @@ def recommend_artwork(user_prefs, weight_artist, weight_genre, weight_style):
         if Favorite.query.filter_by(user_id=user_id, artwork_id=artwork.id, favorite=True).first():
             continue
 
-        # artwork_title = extract_title(artwork)
+
         artwork_artist = set(artwork.artistName.split(", "))
         artwork_genres = set(artwork.genres.split(", "))
         artwork_styles = set(artwork.styles.split(", "))
@@ -404,9 +436,21 @@ def recommendations():
         # Get recommended artwork based on user preferences and weights
     recommended_artwork = recommend_artwork(user_prefs, weight_artist, weight_genre, weight_style)[0:100]
 
+    # Convert recommended artwork to a list of dictionaries
+    recommended_json = [
+        {
+            'id': artwork.id,
+            'artistName': artwork.artistName,
+            'genres': artwork.genres,
+            'styles': artwork.styles
+        }
+        for artwork in recommended_artwork
+    ]
+    current_page='recommendations'
 
 
-    return render_template('recommendations.html', recommended_artwork=recommended_artwork,user_prefs=user_prefs)
+
+    return render_template('recommendations.html', recommended_json=recommended_json,recommended_artwork=recommended_artwork,user_prefs=user_prefs,current_page=current_page)
 
 
 

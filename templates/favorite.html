@@ -51,6 +51,13 @@
 <body>
 
   {% include 'navbar.html' %}
+
+  <a href="javascript:history.back()" class="back-button">
+    <svg width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 21L2 11L12 1" stroke="currentColor" stroke-width="2"/>
+    </svg>
+</a>
+
   <h1 style="color: #fff; text-align: center;">Favorite Artworks</h1>
     <div style="display: flex; flex-wrap: wrap; justify-content: center; margin: 30px;">
       
@@ -58,7 +65,7 @@
 
         <!-- Add cards here -->
         {% for favorite, artwork in favorites %}
-        <a href="{{ url_for('artwork_detail', artwork_id=artwork.id) }}" style="text-decoration: none;">
+        <a href="{{ url_for('favorite_artwork_detail', artwork_id=artwork.id) }}" style="text-decoration: none;">
         <div class="card " style=" padding: 0;">
             <img src="{{ artwork.image }}" alt="{{ artwork.title }}" class="card-img-top">
             <div class="card-body" style="overflow: hidden;">

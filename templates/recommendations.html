@@ -26,10 +26,21 @@
   </head>
   <body>
     {% include 'navbar.html' %}
-    <div style="display: flex;flex-wrap: wrap;margin: 30px 200px 30px 200px; justify-content: space-between;">
+
+    <a href="javascript:history.back()" class="back-button">
+      <svg width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21L2 11L12 1" stroke="currentColor" stroke-width="2"/>
+      </svg>
+  </a>
+    <div style="display: flex;flex-wrap: wrap;margin: 30px 200px 30px 200px; justify-content: space-between; align-items: center;">
       <h1 style="color: #fff;">Recommended Artworks</h1>
+
+<div>
+      <button style=" vertical-align: middle;background-color: transparent; height: 60px; border: 1px solid white; color: #fff;border-radius: 5px;padding-left: 20px; padding-right: 20px;" data-toggle="modal" data-target="#preference">
+        See my preference
+      </button>
   
-      <button style="background-color: transparent; border: 1px solid white; color: #fff;border-radius: 5px;padding-left: 20px; padding-right: 20px;" data-toggle="modal" data-target="#weightModal">
+      <button style=" vertical-align: middle; background-color: transparent; height: 60px;border: 1px solid white; color: #fff;border-radius: 5px;padding-left: 20px; padding-right: 20px;" data-toggle="modal" data-target="#weightModal">
         <span>
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.6655 25.1832C8.71066 24.6012 6.97064 23.5207 5.59284 22.089C6.10684 21.4799 6.41659 20.6928 6.41659 19.8334C6.41659 17.9004 4.84958 16.3334 2.91659 16.3334C2.79966 16.3334 2.68406 16.3391 2.57008 16.3503C2.4148 15.5911 2.33325 14.8051 2.33325 14C2.33325 12.7805 2.52037 11.6047 2.86746 10.4997C2.88381 10.4999 2.90018 10.5 2.91659 10.5C4.84958 10.5 6.41659 8.93301 6.41659 7.00002C6.41659 6.4451 6.28744 5.92039 6.0576 5.45419C7.40679 4.19967 9.05354 3.26081 10.8803 2.75513C11.4592 3.88974 12.6388 4.6667 13.9999 4.6667C15.361 4.6667 16.5407 3.88974 17.1195 2.75513C18.9463 3.26081 20.593 4.19967 21.9422 5.45419C21.7124 5.92039 21.5833 6.4451 21.5833 7.00002C21.5833 8.93301 23.1503 10.5 25.0833 10.5C25.0996 10.5 25.116 10.4999 25.1324 10.4997C25.4795 11.6047 25.6666 12.7805 25.6666 14C25.6666 14.8051 25.585 15.5911 25.4298 16.3503C25.3158 16.3391 25.2002 16.3334 25.0833 16.3334C23.1503 16.3334 21.5833 17.9004 21.5833 19.8334C21.5833 20.6928 21.893 21.4799 22.407 22.089C21.0292 23.5207 19.2892 24.6012 17.3344 25.1832C16.8832 23.772 15.5609 22.75 13.9999 22.75C12.4389 22.75 11.1166 23.772 10.6655 25.1832Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
@@ -39,7 +50,7 @@
         </span>
         Set up weight
       </button>
-   
+    </div>
     </div>
 
 
@@ -57,7 +68,7 @@
       <!-- Add cards here -->
       {% for artwork in recommended_artwork %}
       <a
-        href="{{ url_for('artwork_detail', artwork_id=artwork.id) }}"
+        href="{{ url_for('recommended_detail', artwork_id=artwork.id) }}"
         style="text-decoration: none"
       >
         <div class="card" style="padding: 0">
@@ -67,9 +78,10 @@
             class="card-img-top"
           />
           <div class="card-body" style="overflow: hidden">
-            <h5 class="card-title" style="color: #fff">{{ artwork.title }}</h5>
-            <p class="card-text" style="color: #fff">
-              {{ artwork.artistName }}
+            <div class="tags" id="tags-{{ artwork.id }}"></div>
+            <h5 class="card-title" style="color: #fff; margin-top: 10px;">{{ artwork.title }}</h5>
+            <!-- <p class="card-text" style="color: #fff">
+              {{ artwork.artistName }} -->
             </p>
           </div>
         </div>
@@ -176,11 +188,11 @@
                 onclick="submitRecommendationForm()"
                 id="save-btn"
                 class="btn btn-primary btn-dark"
-                style="margin-top: 10px; margin-bottom: 20px; width: 100%"
+                style="margin-top: 10px; margin-bottom: 10px; width: 100%"
               >
                 Save
               </button>
-              <a id="toggle-preference" style="cursor: pointer;text-decoration: underline;">See my preference</a>
+
             </div>
           </form>
         </div>
@@ -224,7 +236,7 @@
        </button>
      </div>
 
-     <div class="modal-body">
+     <!-- <div class="modal-body">
       <div>
       <table>
         {% for category, preferences in user_prefs.items() %}
@@ -245,10 +257,79 @@
 
     <a id="toggle-weight" style="cursor: pointer;text-decoration: underline;" > Set up weight</a> 
   </div>
- </div>
+ </div> -->
+
+ <div class="modal-body">
+  <div class="category-container">
+    <h3 class="category-title">Artists</h3>
+    <ul class="tag-list">
+      {% for artist in user_prefs.artist %}
+      <li class="tag-preference tag-artist">{{ artist }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="category-container">
+    <h3 class="category-title">Genres</h3>
+    <ul class="tag-list">
+      {% for genre in user_prefs.genre %}
+      <li class="tag-preference tag-genre">{{ genre}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="category-container">
+    <h3 class="category-title">Styles</h3>
+    <ul class="tag-list">
+      {% for style in user_prefs.style %}
+      <li class="tag-preference tag-style">{{ style }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
 </div>
  </div>
 </div>
+
+<script>
+// Get user preferences from the backend
+const userPrefs = JSON.parse('{{ user_prefs | tojson | safe }}');
+console.log(userPrefs)
+
+// Get recommended artwork details from the backend
+const recommended_json = JSON.parse('{{ recommended_json | tojson | safe }}');
+console.log(recommended_json)
+
+// Iterate over each recommended artwork
+recommended_json.forEach(artwork => {
+  // Calculate the intersection of user preferences and artwork tags
+  const matchedTags = {
+    artist: Object.keys(userPrefs.artist).filter(artist => artwork.artistName === artist),
+    genre: Object.keys(userPrefs.genre).filter(genre => {
+      const artworkGenres = artwork.genres.split(', ');
+      return artworkGenres.includes(genre);
+    }),
+    style: Object.keys(userPrefs.style).filter(style => {
+      const artworkStyles = artwork.styles.split(', ');
+      return artworkStyles.includes(style);
+    })
+  };
+
+
+  // Display the matched tags in the corresponding card
+  const tagsContainer = document.getElementById('tags-' + artwork.id);
+  for (const key in matchedTags) {
+    const tags = matchedTags[key];
+    for (let i = 0; i < tags.length; i++) {
+      const tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.textContent = tags[i];
+      tagsContainer.appendChild(tag);
+    }
+  }
+});
+
+
+</script>
 
 
 
@@ -317,9 +398,9 @@ $("#toggle-preference").click(function(){
 <script>
   $(document).ready(function() {
   // Get values from localStorage
-  var artistValue = localStorage.getItem('weight_artist') || 50;
-  var genreValue = localStorage.getItem('weight_genre') || 50;
-  var styleValue = localStorage.getItem('weight_style') || 50;
+  const artistValue = localStorage.getItem('weight_artist') || 50;
+  const genreValue = localStorage.getItem('weight_genre') || 50;
+  const styleValue = localStorage.getItem('weight_style') || 50;
 
   // Set slider values
   $('#artistSlider').val(artistValue);

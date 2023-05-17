@@ -10,6 +10,20 @@ body {
   font-family: "Lora", serif;
 }
 
+.tag {
+  display: inline-block;
+  background-color: black;
+  color: white;
+  font-size: 14px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin: 0 10px 6px 0;
+}
+
+.nav-link.active {
+  color: #ffffff; /* 设置当前页面导航链接的字体颜色为白色 */
+}
+
 .carouselExample {
   position: relative;
   /* 其他页面样式 */
@@ -246,4 +260,56 @@ label {
   top: 0;
   left: 0;
   margin-top: 15px;
+}
+
+.tag-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.tag-preference {
+  display: inline-block;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 4px 8px;
+  margin: 4px;
+  border-radius: 4px;
+}
+
+.tag-artist {
+  background-color: #ffe0e6;
+}
+
+.tag-genre {
+  background-color: #fff5cc;
+}
+
+.tag-style {
+  background-color: #e1f5fe;
+}
+
+.category-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.back-button {
+  position: absolute;
+
+  top: 17px;
+  left: 24px;
+  background-color: black;
+  color: rgb(140, 140, 140);
+  text-decoration: none;
+  transition: all color 0.1s;
+}
+
+.back-button svg path {
+  stroke: rgb(140, 140, 140); /* Set the default color to grey */
+  transition: stroke 0.3s; /* Add a smooth transition effect */
+}
+
+.back-button:hover svg path {
+  stroke: white; /* Change the color to white on hover */
 }
