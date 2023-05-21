@@ -304,88 +304,79 @@ console.log(userPrefs)
 const recommended_json = JSON.parse('{{ recommended_json | tojson | safe }}');
 console.log(recommended_json)
 
-// // Iterate over each recommended artwork
-// recommended_json.forEach(artwork => {
-//   // Calculate the intersection of user preferences and artwork tags
-//   const matchedTags = {
-//     artist: Object.keys(userPrefs.artist).filter(artist => artwork.artistName === artist),
-//     genre: Object.keys(userPrefs.genre).filter(genre => {
-//       const artworkGenres = artwork.genres.split(', ');
-//       return artworkGenres.includes(genre);
-//     }),
-//     style: Object.keys(userPrefs.style).filter(style => {
-//       const artworkStyles = artwork.styles.split(', ');
-//       return artworkStyles.includes(style);
-//     })
-//   };
+const url = new URL(window.location.href);
 
+const searchParams = new URLSearchParams(url.search);
 
-//   // Display the matched tags in the corresponding card
-//   const tagsContainer = document.getElementById('tags-' + artwork.id);
-//   for (const key in matchedTags) {
-//     const tags = matchedTags[key];
-//     for (let i = 0; i < tags.length; i++) {
-//       const tag = document.createElement('span');
-//       tag.className = 'tag';
-//       tag.textContent = tags[i];
-//       tagsContainer.appendChild(tag);
-//     }
-//   }
-// });
+const weightArtist = searchParams.get('weight_artist');
+const weightGenre = searchParams.get('weight_genre');
+const weightStyle = searchParams.get('weight_style');
 
 
 
 recommended_json.forEach(artwork => {
-  // Calculate the intersection of user preferences and artwork tags
-  const matchedTags = {
-    artist: Object.keys(userPrefs.artist).filter(artist => artwork.artistName === artist),
-    genre: Object.keys(userPrefs.genre).filter(genre => {
-      const artworkGenres = artwork.genres.split(', ');
-      return artworkGenres.includes(genre);
-    }),
-    style: Object.keys(userPrefs.style).filter(style => {
-      const artworkStyles = artwork.styles.split(', ');
-      return artworkStyles.includes(style);
-    })
-  };
+  let artistTag = [...artwork.artistName.split(',')];
+  let genreTag =  [...artwork.genres.split(', ')];
+  let styleTag =[...artwork.styles.split(', ')];
+ 
 
-  // Get all artwork tags
-  let allTags = [
-    ...artwork.artistName.split(','),
-    ...artwork.genres.split(', '),
-    ...artwork.styles.split(', ')
-  ];
-
-  // Display the matched tags in the corresponding card
   const tagsContainer = document.getElementById('tags-' + artwork.id);
-  for (const key in matchedTags) {
-    const tags = matchedTags[key];
-    for (let i = 0; i < tags.length; i++) {
-      const tag = document.createElement('span');
-      tag.className = `tag tag1-${key}`;
-      tag.textContent = tags[i];
-      tagsContainer.appendChild(tag);
 
-      // Remove the matched tag from allTags
-      allTags = allTags.filter(tag => !matchedTags.artist.includes(tag) && !matchedTags.genre.includes(tag) && !matchedTags.style.includes(tag));
-
-    }
-  }
-
-  // Display remaining artwork tags
-  for (let i = 0; i < allTags.length; i++) {
+  for (let i = 0; i < artistTag.length; i++) {
     const tag = document.createElement('span');
+    if ((weightArtist > 0 && Object.keys(userPrefs.artist).includes(artistTag[i])) || (weightArtist < 0 && !Object.keys(userPrefs.artist).includes(artistTag[i]))){
+      tag.className ='tag tag1-artist';
+      tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="12" r="8" fill="none" stroke="#ffe0e6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 44C42 34.0589 33.9411 26 24 26C14.0589 26 6 34.0589 6 44" stroke="#ffe0e6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    tag.innerHTML += `  ${artistTag[i]}`
+    }
+    else{
     tag.className = 'tag';
-    tag.textContent = allTags[i];
+    tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="12" r="8" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 44C42 34.0589 33.9411 26 24 26C14.0589 26 6 34.0589 6 44" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    tag.innerHTML += `  ${artistTag[i]}`;}
+
     tagsContainer.appendChild(tag);
   }
+
+
+for (let i = 0; i < genreTag.length; i++) {
+    const tag = document.createElement('span');
+    if ((weightGenre > 0 && Object.keys(userPrefs.genre).includes(genreTag[i])) || (weightGenre < 0 && !Object.keys(userPrefs.genre).includes(genreTag[i]))){
+      tag.className ='tag tag1-genre';
+      tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C29.9601 44 26.3359 35.136 30 31C33.1264 27.4709 44 29.0856 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="#fff5cc" stroke-width="4" stroke-linejoin="round"/><path d="M28 17C29.6569 17 31 15.6569 31 14C31 12.3431 29.6569 11 28 11C26.3431 11 25 12.3431 25 14C25 15.6569 26.3431 17 28 17Z" fill="none" stroke="#fff5cc" stroke-width="4" stroke-linejoin="round"/><path d="M16 21C17.6569 21 19 19.6569 19 18C19 16.3431 17.6569 15 16 15C14.3431 15 13 16.3431 13 18C13 19.6569 14.3431 21 16 21Z" fill="none" stroke="#fff5cc" stroke-width="4" stroke-linejoin="round"/><path d="M17 34C18.6569 34 20 32.6569 20 31C20 29.3431 18.6569 28 17 28C15.3431 28 14 29.3431 14 31C14 32.6569 15.3431 34 17 34Z" fill="none" stroke="#fff5cc" stroke-width="4" stroke-linejoin="round"/></svg>`
+    tag.innerHTML += `  ${genreTag[i]}`
+    }
+    else{
+    tag.className = 'tag';
+    tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C29.9601 44 26.3359 35.136 30 31C33.1264 27.4709 44 29.0856 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/><path d="M28 17C29.6569 17 31 15.6569 31 14C31 12.3431 29.6569 11 28 11C26.3431 11 25 12.3431 25 14C25 15.6569 26.3431 17 28 17Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/><path d="M16 21C17.6569 21 19 19.6569 19 18C19 16.3431 17.6569 15 16 15C14.3431 15 13 16.3431 13 18C13 19.6569 14.3431 21 16 21Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/><path d="M17 34C18.6569 34 20 32.6569 20 31C20 29.3431 18.6569 28 17 28C15.3431 28 14 29.3431 14 31C14 32.6569 15.3431 34 17 34Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/></svg>`
+    tag.innerHTML += `  ${genreTag[i]}`;}
+
+    tagsContainer.appendChild(tag);
+  }
+
+
+
+  for (let i = 0; i < styleTag.length; i++) {
+    const tag = document.createElement('span');
+    if ((weightStyle > 0 && Object.keys(userPrefs.style).includes(styleTag[i])) || (weightStyle < 0 && !Object.keys(userPrefs.style).includes(styleTag[i]))){
+      tag.className ='tag tag1-style';
+      tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 44V14L14 4H44V34L34 44H4Z" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 14V44" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4L14 34" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14L34 14" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 4L34 14" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 44L14 34" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 34L44 34" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    tag.innerHTML += `  ${styleTag[i]}`
+    }
+    else{
+    tag.className = 'tag';
+    tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 44V14L14 4H44V34L34 44H4Z" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 14V44" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4L14 34" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14L34 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 4L34 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 44L14 34" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 34L44 34" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    tag.innerHTML += `  ${styleTag[i]}`;}
+
+    tagsContainer.appendChild(tag);
+  }
+
+
 });
 
 
 
+
 </script>
-
-
 
 <script>
 // 监听toggle-weight点击事件
@@ -460,16 +451,13 @@ $("#toggle-preference").click(function(){
   $('#genreSlider').val(genreValue);
   $('#styleSlider').val(styleValue);
 
-  // Set progress bar widths
-  $('#artistProgress').css('width', artistValue + '%');
-  $('#genreProgress').css('width', genreValue + '%');
-  $('#styleProgress').css('width', styleValue + '%');
-
   // Set slider value display
   $('#artistValue').text(artistValue + '%');
   $('#genreValue').text(genreValue + '%');
   $('#styleValue').text(styleValue + '%');
 });
+
+
 
 </script>
 
