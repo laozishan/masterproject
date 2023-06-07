@@ -33,7 +33,12 @@
       </svg>
   </a>
     <div style="display: flex;flex-wrap: wrap;margin: 30px 200px 30px 200px; justify-content: space-between; align-items: center;">
-      <h1 style="color: #fff;">Recommended Artworks</h1>
+      <h1 style="color: #fff;">Recommended Artworks
+        <a data-toggle="modal" data-target="#explanation">
+        
+        <svg t="1685269738805" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2388" width="32" height="32" data-spm-anchor-id="a313x.7781069.0.i7" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M511.337409 63.564711c-247.341295 0-447.847911 200.508663-447.847911 447.847911 0 247.339248 200.508663 447.847911 447.847911 447.847911 247.338225 0 447.846888-200.508663 447.846888-447.847911C959.18532 264.073374 758.676657 63.564711 511.337409 63.564711zM511.337409 894.935506c-211.81415 0-383.52186-171.709757-383.52186-383.522883 0-211.81415 171.706687-383.52186 383.52186-383.52186 211.812103 0 383.52186 171.70771 383.52186 383.52186C894.859269 723.225749 723.149513 894.935506 511.337409 894.935506z" fill="#ffffff" p-id="2389" data-spm-anchor-id="a313x.7781069.0.i6" class="selected"></path><path d="M501.962901 270.521227c-65.918315 2.162246-135.077441 34.579563-157.769256 135.075395 54.029544 7.565303 79.96524 10.807137 79.96524 10.807137s14.048971-86.449931 100.496855-76.723406c86.448908 9.726525 66.998927 74.563206 58.351989 87.530542-8.643867 21.61325-88.609107 73.482595-101.577466 104.819301-12.967336 31.337729-11.886725 89.691765-11.886725 89.691765l77.80504 0c0 0-4.323469-61.59587 38.902008-87.530542 43.224454-25.934672 116.706025-101.57849 84.288708-173.97945C618.668926 277.004895 567.880193 268.360004 501.962901 270.521227z" fill="#ffffff" p-id="2390" data-spm-anchor-id="a313x.7781069.0.i8" class="selected"></path><path d="M468.463949 650.897444l81.045851 0 0 88.598874-81.045851 0 0-88.598874Z" fill="#ffffff" p-id="2391"></path></svg> </a>
+      
+      </h1>
 
 <div>
       <button style=" vertical-align: middle;background-color: transparent; height: 60px; border: 1px solid white; color: #fff;border-radius: 5px;padding-left: 20px; padding-right: 20px;" data-toggle="modal" data-target="#preference">
@@ -241,28 +246,6 @@
        </button>
      </div>
 
-     <!-- <div class="modal-body">
-      <div>
-      <table>
-        {% for category, preferences in user_prefs.items() %}
-        <tr>
-            <td>{{ category }}</td>
-            <td>
-                <ul>
-                    {% for preference, count in preferences.items() %}
-                    <li>{{ preference }}: {{ count }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        {% endfor %}    
-    </table>
-  </div>
-  <div style="margin-top: 20px;">
-
-    <a id="toggle-weight" style="cursor: pointer;text-decoration: underline;" > Set up weight</a> 
-  </div>
- </div> -->
 
  <div class="modal-body">
   <div class="category-container">
@@ -294,6 +277,65 @@
 </div>
  </div>
 </div>
+
+
+
+ <!-- model-->
+ <div
+ class="modal fade"
+ style="display: none;"
+ id="explanation"
+ tabindex="-1"
+ role="dialog"
+ aria-hidden="true"
+>
+ <div class="modal-dialog modal-dialog-centered" role="document">
+   <div class="modal-content">
+     <!-- 模态框头部 -->
+     <div class="modal-header">
+       <h5 class="modal-title" style="font-weight: bold">
+         Why I get these recommendations?
+       </h5>
+     </br>
+       
+       <button
+         type="button"
+         class="close"
+         data-dismiss="modal"
+         style="
+           font-size: 28px;
+           border: none;
+           background-color: transparent;
+           font-weight: bold;
+         "
+         aria-label="Close"
+       >
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+
+
+ <div class="modal-body">
+  <div class="category-container">
+   <p>✅ The recommendations are initially based on artists, genres, and styles that you have previously liked. By incorporating Jaccard similarity, the scores are calculated to suggest artworks that align with your interests. </p>
+   <p>✅ You can customize your recommendations by adjusting the weight parameters for each category using sliders, and you have the flexibility to emphasize or de-emphasize specific category. The highlighted tags will suggest artists, genres, or styles that match your desired preferences. </p>
+    
+   <p>✅ For example, if you're interested in exploring artworks similar to your previous preferences, you can adjust the weight parameters to positive values. The highlighted tags will then suggest artworks that share similarities with your previous favorites.</p>
+    
+    <p>✅ On the other hand, if you're looking for recommendations that are different from your past preferences, you can adjust the weight parameters to negative values accordingly. The highlighted tags will then suggest artists, genres, or styles that you haven't explored much before, providing a variety of options for you to discover.</p>
+   <p>✅ If you don't have any preferences yet, we will recommend artwork for you based on popularity. </p>
+
+  </div>
+</div>
+
+</div>
+ </div>
+</div>
+
+
+
+
+
 
 <script>
 // Get user preferences from the backend
@@ -397,9 +439,9 @@ $("#toggle-preference").click(function(){
 
   <script>
     function setupSlider(slider, value) {
-      value.innerHTML = slider.value + "%";
+      value.innerHTML = slider.value ;
       slider.oninput = function() {
-        value.innerHTML = this.value + "%";
+        value.innerHTML = this.value ;
       };
     }
     
@@ -452,9 +494,9 @@ $("#toggle-preference").click(function(){
   $('#styleSlider').val(styleValue);
 
   // Set slider value display
-  $('#artistValue').text(artistValue + '%');
-  $('#genreValue').text(genreValue + '%');
-  $('#styleValue').text(styleValue + '%');
+  $('#artistValue').text(artistValue );
+  $('#genreValue').text(genreValue );
+  $('#styleValue').text(styleValue );
 });
 
 

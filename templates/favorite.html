@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Bootstrap demo</title>
+        <title>Favorite</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -78,7 +78,7 @@
 
         {% else %}
   <h5 style="color: #fff; text-align: center; margin-top: 250px;">Oops, you don't have any favorite artworks yet.</br>
-  </br> Please go to <a href="{{url_for('home')}}">homepage</a> or <a>recommendation page </a>to explore more </h5>
+  </br> Please go to <a href="{{url_for('home')}}">homepage</a> or <a href="{{url_for('recommendations')}}">recommendation page </a>to explore more </h5>
   
 
 {% endif %}

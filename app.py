@@ -262,111 +262,65 @@ def toggle_favorite(artwork_id):
 
 
 
-# 获取所有 Artwork 对象的 genres 和 styles 字段，组合成一个字符
+def get_similar_artworks(artwork_id):
+    artworks = Artwork.query.all()
+    corpus = [artwork.title + " " + artwork.artistName + " " + artwork.genres + " " + artwork.styles for artwork in artworks]
 
-artworks = Artwork.query.all()
-corpus = [artwork.title+ " " +  artwork.artistName +" " + artwork.genres + " " + artwork.styles for artwork in artworks]
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(corpus)
 
-# 对所有 Artwork 的组合字符串应用 TF-IDF 向量化器
-vectorizer = TfidfVectorizer()
-tfidf_matrix = vectorizer.fit_transform(corpus)
+    artwork = Artwork.query.get(artwork_id)
+
+    query = artwork.title + " " + artwork.artistName + " " + artwork.genres + " " + artwork.styles
+    query_vec = vectorizer.transform([query])
+
+    similarity_scores = cosine_similarity(query_vec, tfidf_matrix)[0]
+
+    top_indices = similarity_scores.argsort()[::-1][1:11]
+
+    similar_artworks = [artworks[i] for i in top_indices]
+
+    return artwork, similar_artworks
 
 
 @app.route('/artworks/<int:artwork_id>')
 def artwork_detail(artwork_id):
-    artwork = Artwork.query.get(artwork_id)
-    
-    # 计算给定 Artwork id 的 TF-IDF 向量
-    query =  artwork.title+ " " +  artwork.artistName +" " + artwork.genres + " " + artwork.styles
-    query_vec = vectorizer.transform([query])
-
-    # 使用 cosine_similarity 计算所有 Artwork 的 TF-IDF 向量与给定 Artwork 的 TF-IDF 向量之间的余弦相似度
-    similarity_scores = cosine_similarity(query_vec, tfidf_matrix)[0]
-
-    # 对相似度进行排序并返回前 10 个
-    top_indices = similarity_scores.argsort()[::-1][1:11]
-
-    # 返回与给定 Artwork id 相似度最高的 10 个 Artwork
-    similar_artworks = [artworks[i] for i in top_indices]
-    
-    
+    artwork, similar_artworks = get_similar_artworks(artwork_id)
     return render_template('details.html', artwork=artwork, similar_artworks=similar_artworks)
-
-
 
 
 @app.route('/favorite-artworks/<int:artwork_id>')
 def favorite_artwork_detail(artwork_id):
-    artwork = Artwork.query.get(artwork_id)
-    
-    # 计算给定 Artwork id 的 TF-IDF 向量
-    query =  artwork.title+ " " +  artwork.artistName +" " + artwork.genres + " " + artwork.styles
-    query_vec = vectorizer.transform([query])
-
-    # 使用 cosine_similarity 计算所有 Artwork 的 TF-IDF 向量与给定 Artwork 的 TF-IDF 向量之间的余弦相似度
-    similarity_scores = cosine_similarity(query_vec, tfidf_matrix)[0]
-
-    # 对相似度进行排序并返回前 10 个
-    top_indices = similarity_scores.argsort()[::-1][1:11]
-
-    # 返回与给定 Artwork id 相似度最高的 10 个 Artwork
-    similar_artworks = [artworks[i] for i in top_indices]
-
-    
-    
-    
+    artwork, similar_artworks = get_similar_artworks(artwork_id)
     return render_template('favorite_detail.html', artwork=artwork, similar_artworks=similar_artworks)
 
 
-
-@app.route('/favorite-artworks/<int:artwork_id>')
+@app.route('/recommended-artworks/<int:artwork_id>')
 def recommended_detail(artwork_id):
-    artwork = Artwork.query.get(artwork_id)
-    
-    # 计算给定 Artwork id 的 TF-IDF 向量
-    query =  artwork.title+ " " +  artwork.artistName +" " + artwork.genres + " " + artwork.styles
-    query_vec = vectorizer.transform([query])
-
-    # 使用 cosine_similarity 计算所有 Artwork 的 TF-IDF 向量与给定 Artwork 的 TF-IDF 向量之间的余弦相似度
-    similarity_scores = cosine_similarity(query_vec, tfidf_matrix)[0]
-
-    # 对相似度进行排序并返回前 10 个
-    top_indices = similarity_scores.argsort()[::-1][1:11]
-
-    # 返回与给定 Artwork id 相似度最高的 10 个 Artwork
-    similar_artworks = [artworks[i] for i in top_indices]
-    
-    
-    return render_template('favorite_detail.html', artwork=artwork, similar_artworks=similar_artworks)
-
+    artwork, similar_artworks = get_similar_artworks(artwork_id)
+    return render_template('recommended_detail.html', artwork=artwork, similar_artworks=similar_artworks)
 
 
 
 
 
 def extract_user_preferences(user_id):
-    # Initialize user preferences dictionary
+
     user_prefs = {
         'artist': defaultdict(int),
         'genre': defaultdict(int),
         'style': defaultdict(int),
-        # 'title': defaultdict(int)
+
     }
 
-    # Get user's favorites
     favorites = Favorite.query.filter_by(user_id=user_id, favorite=True).all()
 
-    # Extract preferences from favorites
     for favorite in favorites:
         
         artwork = Artwork.query.get(favorite.artwork_id)
-        # artwork_title = extract_title(artwork)
         artwork_artist = set(artwork.artistName.split(", "))
         artwork_genres = set(artwork.genres.split(", "))
         artwork_styles = set(artwork.styles.split(", "))
-
-
-
 
         for artist in artwork_artist:
             user_prefs['artist'][artist] += 1
@@ -377,7 +331,7 @@ def extract_user_preferences(user_id):
         for style in artwork_styles:
             user_prefs['style'][style] += 1
 
-        
+
     print(user_prefs)
 
     return user_prefs
@@ -403,11 +357,7 @@ def recommend_artwork(user_prefs, weight_artist, weight_genre, weight_style):
         artist_score = len(user_prefs['artist'].keys() & artwork_artist) / len(user_prefs['artist'].keys() | artwork_artist)
         genre_score = len(user_prefs['genre'].keys() & artwork_genres) / len(user_prefs['genre'].keys() | artwork_genres)
         style_score = len(user_prefs['style'].keys() & artwork_styles) / len(user_prefs['style'].keys() | artwork_styles)
-        # title_score = len(user_prefs['title'].keys() & artwork_title) / len(user_prefs['title'].keys() | artwork_title)
 
-        
-
-        # Calculate overall artwork score based on weighted similarity scores
         overall_score = (weight_artist * artist_score) + (weight_genre * genre_score) + (weight_style * style_score) 
         # Add artwork score to dictionary
         artwork_scores[artwork] = overall_score

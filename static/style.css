@@ -331,3 +331,7 @@ label {
 .back-button:hover svg path {
   stroke: white; /* Change the color to white on hover */
 }
+
+h1 a:hover {
+  cursor: pointer;
+}
