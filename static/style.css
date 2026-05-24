@@ -512,6 +512,8 @@ img {
 .similarity-card-link {
   color: inherit;
   flex: 0 0 clamp(220px, 15vw, 280px);
+  max-width: clamp(220px, 15vw, 280px);
+  min-width: 0;
   scroll-snap-align: start;
   text-decoration: none;
   white-space: normal;
@@ -521,6 +523,7 @@ img {
   background-color: #282828;
   border-radius: 8px;
   height: 100%;
+  min-width: 0;
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
 }
@@ -532,7 +535,10 @@ img {
 .similarity-card img {
   aspect-ratio: 1 / 1;
   display: block;
+  height: clamp(220px, 15vw, 280px);
+  max-width: 100%;
   object-fit: cover;
+  object-position: center;
   width: 100%;
 }
 
@@ -602,5 +608,6 @@ img {
 
   .similarity-card-link {
     flex-basis: 78vw;
+    max-width: 78vw;
   }
 }
