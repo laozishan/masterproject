@@ -2,6 +2,7 @@ services:
   - type: web
     name: cultural-heritage-recommender
     env: python
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
     envVars:
@@ -16,5 +17,6 @@ services:
 
 databases:
   - name: cultural-heritage-db
+    plan: free
     databaseName: cultural_heritage
     user: cultural_heritage
