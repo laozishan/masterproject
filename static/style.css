@@ -474,6 +474,7 @@ img {
 }
 
 .similarity-section {
+  clear: both;
   margin: 70px auto 40px;
   max-width: 1784px;
   width: calc(100% - 96px);
@@ -486,14 +487,34 @@ img {
 }
 
 .similarity-grid {
-  display: grid;
+  display: flex;
   gap: 28px;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  overflow-x: auto;
+  overflow-y: visible;
+  padding-bottom: 16px;
+  scroll-snap-type: x proximity;
+  white-space: nowrap;
+}
+
+.similarity-grid::-webkit-scrollbar {
+  height: 8px;
+}
+
+.similarity-grid::-webkit-scrollbar-thumb {
+  background: #777;
+  border-radius: 999px;
+}
+
+.similarity-grid::-webkit-scrollbar-track {
+  background: #191919;
 }
 
 .similarity-card-link {
   color: inherit;
+  flex: 0 0 clamp(220px, 15vw, 280px);
+  scroll-snap-align: start;
   text-decoration: none;
+  white-space: normal;
 }
 
 .similarity-card {
@@ -579,7 +600,7 @@ img {
     font-size: 24px;
   }
 
-  .similarity-grid {
-    grid-template-columns: 1fr;
+  .similarity-card-link {
+    flex-basis: 78vw;
   }
 }
