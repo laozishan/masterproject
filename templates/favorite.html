@@ -67,7 +67,7 @@
         {% for favorite, artwork in favorites %}
         <a href="{{ url_for('favorite_artwork_detail', artwork_id=artwork.id) }}" style="text-decoration: none;">
         <div class="card " style=" padding: 0;">
-            <img src="{{ artwork.image }}" alt="{{ artwork.title }}" class="card-img-top">
+            <img src="{{ artwork.image }}" alt="{{ artwork.title }}" class="card-img-top" loading="lazy" decoding="async">
             <div class="card-body" style="overflow: hidden;">
               <h5 class="card-title" style="color:#fff">{{ artwork.title }}</h5>
               <p class="card-text" style="color:#fff">{{ artwork.artistName }}</p>
@@ -86,4 +86,3 @@
 
 </body>
 </html>
-

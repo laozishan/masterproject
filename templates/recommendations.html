@@ -17,7 +17,7 @@
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
+      href="{{ url_for('static', filename='style.css') }}?v=4"
     />
 
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
@@ -32,20 +32,20 @@
           <path d="M12 21L2 11L12 1" stroke="currentColor" stroke-width="2"/>
       </svg>
   </a>
-    <div style="display: flex;flex-wrap: wrap;margin: 30px 200px 30px 200px; justify-content: space-between; align-items: center;">
-      <h1 style="color: #fff;">Recommended Artworks
+    <div class="recommendation-header">
+      <h1 class="recommendation-title">Recommended Artworks
         <a data-toggle="modal" data-target="#explanation">
         
         <svg t="1685269738805" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2388" width="32" height="32" data-spm-anchor-id="a313x.7781069.0.i7" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M511.337409 63.564711c-247.341295 0-447.847911 200.508663-447.847911 447.847911 0 247.339248 200.508663 447.847911 447.847911 447.847911 247.338225 0 447.846888-200.508663 447.846888-447.847911C959.18532 264.073374 758.676657 63.564711 511.337409 63.564711zM511.337409 894.935506c-211.81415 0-383.52186-171.709757-383.52186-383.522883 0-211.81415 171.706687-383.52186 383.52186-383.52186 211.812103 0 383.52186 171.70771 383.52186 383.52186C894.859269 723.225749 723.149513 894.935506 511.337409 894.935506z" fill="#ffffff" p-id="2389" data-spm-anchor-id="a313x.7781069.0.i6" class="selected"></path><path d="M501.962901 270.521227c-65.918315 2.162246-135.077441 34.579563-157.769256 135.075395 54.029544 7.565303 79.96524 10.807137 79.96524 10.807137s14.048971-86.449931 100.496855-76.723406c86.448908 9.726525 66.998927 74.563206 58.351989 87.530542-8.643867 21.61325-88.609107 73.482595-101.577466 104.819301-12.967336 31.337729-11.886725 89.691765-11.886725 89.691765l77.80504 0c0 0-4.323469-61.59587 38.902008-87.530542 43.224454-25.934672 116.706025-101.57849 84.288708-173.97945C618.668926 277.004895 567.880193 268.360004 501.962901 270.521227z" fill="#ffffff" p-id="2390" data-spm-anchor-id="a313x.7781069.0.i8" class="selected"></path><path d="M468.463949 650.897444l81.045851 0 0 88.598874-81.045851 0 0-88.598874Z" fill="#ffffff" p-id="2391"></path></svg> </a>
       
       </h1>
 
-<div>
-      <button style=" vertical-align: middle;background-color: transparent; height: 60px; border: 1px solid white; color: #fff;border-radius: 5px;padding-left: 20px; padding-right: 20px;" data-toggle="modal" data-target="#preference">
+<div class="recommendation-actions">
+      <button class="recommendation-action-button" data-toggle="modal" data-target="#preference">
         See my preference
       </button>
   
-      <button style=" vertical-align: middle; background-color: transparent; height: 60px;border: 1px solid white; color: #fff;border-radius: 5px;padding-left: 20px; padding-right: 20px;" data-toggle="modal" data-target="#weightModal">
+      <button class="recommendation-action-button" data-toggle="modal" data-target="#weightModal">
         <span>
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.6655 25.1832C8.71066 24.6012 6.97064 23.5207 5.59284 22.089C6.10684 21.4799 6.41659 20.6928 6.41659 19.8334C6.41659 17.9004 4.84958 16.3334 2.91659 16.3334C2.79966 16.3334 2.68406 16.3391 2.57008 16.3503C2.4148 15.5911 2.33325 14.8051 2.33325 14C2.33325 12.7805 2.52037 11.6047 2.86746 10.4997C2.88381 10.4999 2.90018 10.5 2.91659 10.5C4.84958 10.5 6.41659 8.93301 6.41659 7.00002C6.41659 6.4451 6.28744 5.92039 6.0576 5.45419C7.40679 4.19967 9.05354 3.26081 10.8803 2.75513C11.4592 3.88974 12.6388 4.6667 13.9999 4.6667C15.361 4.6667 16.5407 3.88974 17.1195 2.75513C18.9463 3.26081 20.593 4.19967 21.9422 5.45419C21.7124 5.92039 21.5833 6.4451 21.5833 7.00002C21.5833 8.93301 23.1503 10.5 25.0833 10.5C25.0996 10.5 25.116 10.4999 25.1324 10.4997C25.4795 11.6047 25.6666 12.7805 25.6666 14C25.6666 14.8051 25.585 15.5911 25.4298 16.3503C25.3158 16.3391 25.2002 16.3334 25.0833 16.3334C23.1503 16.3334 21.5833 17.9004 21.5833 19.8334C21.5833 20.6928 21.893 21.4799 22.407 22.089C21.0292 23.5207 19.2892 24.6012 17.3344 25.1832C16.8832 23.772 15.5609 22.75 13.9999 22.75C12.4389 22.75 11.1166 23.772 10.6655 25.1832Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
@@ -62,32 +62,40 @@
 
 
 
-    <div
-      style="
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin: 30px;
-      "
-    >
-      <!-- Add cards here -->
-      {% for artwork in recommended_artwork %}
+    <div class="recommendation-grid">
+      {% for item in recommended_items %}
+      {% set artwork = item.artwork %}
       <a
         href="{{ url_for('recommended_detail', artwork_id=artwork.id) }}"
-        style="text-decoration: none"
+        class="recommendation-card-link"
       >
-        <div class="card" style="padding: 0">
+        <div class="card recommendation-card" style="padding: 0">
           <img
             src="{{ artwork.image }}"
             alt="{{ artwork.title }}"
             class="card-img-top"
+            loading="lazy"
+            decoding="async"
           />
-          <div class="card-body" style="overflow: hidden">
+          <div class="card-body">
             <h5 class="card-title" style="color: #fff; margin-top: 10px;">{{ artwork.title }}</h5>
-            <!-- <p class="card-text" style="color: #fff">
-              {{ artwork.artistName }} -->
-              <div class="tags" id="tags-{{ artwork.id }}"></div>
-            </p>
+            <div class="tags" id="tags-{{ artwork.id }}">
+              {% for tag in item.tags %}
+              <span
+                class="tag {% if tag.highlighted %}tag1-{{ tag.category }}{% endif %}"
+                {% if tag.reason %}data-reason="{{ tag.reason }}" title="{{ tag.reason }}"{% endif %}
+              >
+                {% if tag.category == 'artist' %}
+                <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 44C42 34.0589 33.9411 26 24 26C14.0589 26 6 34.0589 6 44" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                {% elif tag.category == 'genre' %}
+                <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C29.9601 44 26.3359 35.136 30 31C33.1264 27.4709 44 29.0856 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M28 17C29.6569 17 31 15.6569 31 14C31 12.3431 29.6569 11 28 11C26.3431 11 25 12.3431 25 14C25 15.6569 26.3431 17 28 17Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/></svg>
+                {% else %}
+                <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 44V14L14 4H44V34L34 44H4Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 14V44" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4L14 34" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                {% endif %}
+                {{ tag.label }}
+              </span>
+              {% endfor %}
+            </div>
           </div>
         </div>
       </a>
@@ -336,89 +344,6 @@
 
 
 
-
-<script>
-// Get user preferences from the backend
-const userPrefs = JSON.parse('{{ user_prefs | tojson | safe }}');
-console.log(userPrefs)
-
-// Get recommended artwork details from the backend
-const recommended_json = JSON.parse('{{ recommended_json | tojson | safe }}');
-console.log(recommended_json)
-
-const url = new URL(window.location.href);
-
-const searchParams = new URLSearchParams(url.search);
-
-const weightArtist = searchParams.get('weight_artist');
-const weightGenre = searchParams.get('weight_genre');
-const weightStyle = searchParams.get('weight_style');
-
-
-
-recommended_json.forEach(artwork => {
-  let artistTag = [...artwork.artistName.split(',')];
-  let genreTag =  [...artwork.genres.split(', ')];
-  let styleTag =[...artwork.styles.split(', ')];
- 
-
-  const tagsContainer = document.getElementById('tags-' + artwork.id);
-
-  for (let i = 0; i < artistTag.length; i++) {
-    const tag = document.createElement('span');
-    if ((weightArtist > 0 && Object.keys(userPrefs.artist).includes(artistTag[i])) || (weightArtist < 0 && !Object.keys(userPrefs.artist).includes(artistTag[i]))){
-      tag.className ='tag tag1-artist';
-      tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="12" r="8" fill="none" stroke="#ffe0e6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 44C42 34.0589 33.9411 26 24 26C14.0589 26 6 34.0589 6 44" stroke="#ffe0e6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-    tag.innerHTML += `  ${artistTag[i]}`
-    }
-    else{
-    tag.className = 'tag';
-    tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="12" r="8" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 44C42 34.0589 33.9411 26 24 26C14.0589 26 6 34.0589 6 44" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-    tag.innerHTML += `  ${artistTag[i]}`;}
-
-    tagsContainer.appendChild(tag);
-  }
-
-
-for (let i = 0; i < genreTag.length; i++) {
-    const tag = document.createElement('span');
-    if ((weightGenre > 0 && Object.keys(userPrefs.genre).includes(genreTag[i])) || (weightGenre < 0 && !Object.keys(userPrefs.genre).includes(genreTag[i]))){
-      tag.className ='tag tag1-genre';
-      tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C29.9601 44 26.3359 35.136 30 31C33.1264 27.4709 44 29.0856 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="#fff5cc" stroke-width="4" stroke-linejoin="round"/><path d="M28 17C29.6569 17 31 15.6569 31 14C31 12.3431 29.6569 11 28 11C26.3431 11 25 12.3431 25 14C25 15.6569 26.3431 17 28 17Z" fill="none" stroke="#fff5cc" stroke-width="4" stroke-linejoin="round"/><path d="M16 21C17.6569 21 19 19.6569 19 18C19 16.3431 17.6569 15 16 15C14.3431 15 13 16.3431 13 18C13 19.6569 14.3431 21 16 21Z" fill="none" stroke="#fff5cc" stroke-width="4" stroke-linejoin="round"/><path d="M17 34C18.6569 34 20 32.6569 20 31C20 29.3431 18.6569 28 17 28C15.3431 28 14 29.3431 14 31C14 32.6569 15.3431 34 17 34Z" fill="none" stroke="#fff5cc" stroke-width="4" stroke-linejoin="round"/></svg>`
-    tag.innerHTML += `  ${genreTag[i]}`
-    }
-    else{
-    tag.className = 'tag';
-    tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C29.9601 44 26.3359 35.136 30 31C33.1264 27.4709 44 29.0856 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/><path d="M28 17C29.6569 17 31 15.6569 31 14C31 12.3431 29.6569 11 28 11C26.3431 11 25 12.3431 25 14C25 15.6569 26.3431 17 28 17Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/><path d="M16 21C17.6569 21 19 19.6569 19 18C19 16.3431 17.6569 15 16 15C14.3431 15 13 16.3431 13 18C13 19.6569 14.3431 21 16 21Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/><path d="M17 34C18.6569 34 20 32.6569 20 31C20 29.3431 18.6569 28 17 28C15.3431 28 14 29.3431 14 31C14 32.6569 15.3431 34 17 34Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/></svg>`
-    tag.innerHTML += `  ${genreTag[i]}`;}
-
-    tagsContainer.appendChild(tag);
-  }
-
-
-
-  for (let i = 0; i < styleTag.length; i++) {
-    const tag = document.createElement('span');
-    if ((weightStyle > 0 && Object.keys(userPrefs.style).includes(styleTag[i])) || (weightStyle < 0 && !Object.keys(userPrefs.style).includes(styleTag[i]))){
-      tag.className ='tag tag1-style';
-      tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 44V14L14 4H44V34L34 44H4Z" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 14V44" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4L14 34" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14L34 14" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 4L34 14" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 44L14 34" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 34L44 34" stroke="#e1f5fe" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-    tag.innerHTML += `  ${styleTag[i]}`
-    }
-    else{
-    tag.className = 'tag';
-    tag.innerHTML =  `<?xml version="1.0" encoding="UTF-8"?><svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 44V14L14 4H44V34L34 44H4Z" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 14V44" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4L14 34" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14L34 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 4L34 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 44L14 34" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 34L44 34" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-    tag.innerHTML += `  ${styleTag[i]}`;}
-
-    tagsContainer.appendChild(tag);
-  }
-
-
-});
-
-
-
-
-</script>
 
 <script>
 // 监听toggle-weight点击事件

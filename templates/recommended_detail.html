@@ -19,7 +19,7 @@
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
+      href="{{ url_for('static', filename='style.css') }}?v=5"
     />
 
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
@@ -188,27 +188,22 @@
 
 
 
-    <div class="container" style=" margin: 50px 0 0 0;"  >
-      <h2  style="align-self: flex-start; color: #fff; margin-left: 90px;">Recommendation Based on Text Similarity to this Artwork</h2>
-      
-      <div class="card-navigation" style=" margin-left: 300px" >
-
-          <div class="card-container" style="width: 1450px;">
-              <!-- Add your cards here -->
-              {% for artwork in similar_artworks %}
-              <a href="{{ url_for('artwork_detail', artwork_id=artwork.id) }}">
-              <div class="card">
-                <img src="{{artwork.image}}" class="card-img-top" alt="{{ artwork.title }}">
-                <div class="card-body" style="overflow: hidden;">
-                  <h5 class="card-title" style="color:#fff">{{ artwork.title }}</h5>
-                  <p class="card-text" style="color:#fff">{{ artwork.artistName }}</p>
-                </div>
-              </div>
-            </a>
-              {% endfor %}
-          </div>
-
-    </div>
+    <section class="similarity-section">
+      <h2>Recommendation Based on Text Similarity to this Artwork</h2>
+      <div class="similarity-grid">
+        {% for artwork in similar_artworks %}
+        <a href="{{ url_for('artwork_detail', artwork_id=artwork.id) }}" class="similarity-card-link">
+          <article class="similarity-card">
+            <img src="{{artwork.image}}" alt="{{ artwork.title }}" loading="lazy" decoding="async">
+            <div class="similarity-card-body">
+              <h5>{{ artwork.title }}</h5>
+              <p>{{ artwork.artistName }}</p>
+            </div>
+          </article>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
     <script>
       const left=document.getElementById('turn-left');
       const left_circle = document.getElementById('circle-left')

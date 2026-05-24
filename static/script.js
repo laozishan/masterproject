@@ -1,34 +1,77 @@
-// page scroller
+const preloadedImages = new Set();
 
-const prevButtons = document.querySelectorAll(".prev-button");
-const nextButtons = document.querySelectorAll(".next-button");
-const cardContainers = document.querySelectorAll(".card-container");
+function findCardContainer(button) {
+  const navigation = button ? button.closest(".card-navigation") : null;
+  return navigation ? navigation.querySelector(".card-container") : null;
+}
 
-function scrollToRight(container) {
+function scrollCards(container, distance) {
+  if (!container) {
+    return;
+  }
   container.scrollBy({
     top: 0,
-    left: 600, // Adjust the scroll amount based on card width
+    left: distance,
     behavior: "smooth",
   });
+  preloadNearbyImages(container);
+}
+
+function scrollToRight(container) {
+  scrollCards(container || findCardContainer(window.event && window.event.currentTarget), 600);
 }
 
 function scrollToLeft(container) {
-  container.scrollBy({
-    top: 0,
-    left: -600, // Adjust the scroll amount based on  card width
-    behavior: "smooth",
+  scrollCards(container || findCardContainer(window.event && window.event.currentTarget), -600);
+}
+
+function preloadImage(src) {
+  if (!src || preloadedImages.has(src)) {
+    return;
+  }
+  preloadedImages.add(src);
+  const image = new Image();
+  image.decoding = "async";
+  image.src = src;
+}
+
+function preloadNearbyImages(container) {
+  const images = Array.from(container.querySelectorAll("img"));
+  const leftEdge = container.scrollLeft;
+  const rightEdge = leftEdge + container.clientWidth + 900;
+
+  images.forEach((image) => {
+    if (image.offsetLeft >= leftEdge && image.offsetLeft <= rightEdge) {
+      preloadImage(image.currentSrc || image.src);
+    }
   });
 }
 
-// Bind the events to the buttons
-for (let i = 0; i < prevButtons.length; i++) {
-  prevButtons[i].addEventListener("click", () => {
-    scrollToLeft(cardContainers[i]);
-  });
-}
+document.querySelectorAll(".prev-button").forEach((button) => {
+  button.addEventListener("click", () => scrollCards(findCardContainer(button), -600));
+});
 
-for (let i = 0; i < nextButtons.length; i++) {
-  nextButtons[i].addEventListener("click", () => {
-    scrollToRight(cardContainers[i]);
-  });
-}
+document.querySelectorAll(".next-button").forEach((button) => {
+  button.addEventListener("click", () => scrollCards(findCardContainer(button), 600));
+});
+
+document.querySelectorAll(".card-container").forEach((container) => {
+  preloadNearbyImages(container);
+  container.addEventListener("scroll", () => preloadNearbyImages(container), { passive: true });
+});
+
+const viewportPreloader = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        preloadImage(entry.target.currentSrc || entry.target.src);
+        viewportPreloader.unobserve(entry.target);
+      }
+    });
+  },
+  { rootMargin: "600px" }
+);
+
+document.querySelectorAll("img[loading='lazy']").forEach((image) => {
+  viewportPreloader.observe(image);
+});

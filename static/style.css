@@ -20,6 +20,44 @@ body {
   margin: 0 10px 6px 0;
 }
 
+.tag[data-reason] {
+  cursor: help;
+  position: relative;
+  z-index: 4;
+}
+
+.tag[data-reason]::after {
+  background: #f7f7f7;
+  border-radius: 6px;
+  bottom: calc(100% + 8px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  color: #111;
+  content: attr(data-reason);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  left: 0;
+  line-height: 1.35;
+  max-width: 260px;
+  opacity: 0;
+  padding: 9px 11px;
+  pointer-events: none;
+  position: absolute;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  white-space: normal;
+  width: max-content;
+  z-index: 1000;
+}
+
+.tag[data-reason]:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tag[data-reason]:hover {
+  z-index: 1000;
+}
+
 .nav-link.active {
   color: #ffffff; /* 设置当前页面导航链接的字体颜色为白色 */
 }
@@ -334,4 +372,214 @@ label {
 
 h1 a:hover {
   cursor: pointer;
+}
+
+.recommendation-header,
+.recommendation-grid {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1784px;
+  width: calc(100% - 96px);
+}
+
+.recommendation-header {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-top: 48px;
+  margin-bottom: 30px;
+}
+
+.recommendation-title {
+  color: #fff;
+  font-size: 52px;
+  margin: 0;
+}
+
+.recommendation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.recommendation-action-button {
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: #fff;
+  display: inline-flex;
+  gap: 8px;
+  height: 60px;
+  padding: 0 24px;
+  white-space: nowrap;
+}
+
+.recommendation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  overflow: visible;
+  padding: 0;
+}
+
+.recommendation-card-link {
+  color: inherit;
+  position: relative;
+  text-decoration: none;
+}
+
+.recommendation-card-link:hover {
+  z-index: 200;
+}
+
+.recommendation-card {
+  height: 100%;
+  margin: 0;
+  position: relative;
+  width: 100%;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-4px);
+  z-index: 200;
+}
+
+.auth-alert {
+  border: 0;
+  border-radius: 6px;
+  font-family: Arial, sans-serif;
+  margin-bottom: 18px;
+}
+
+.auth-field-error {
+  color: #ffb4b4;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  margin: -12px 0 14px;
+}
+
+img {
+  background: #161616;
+}
+
+.recommendation-card,
+.recommendation-card .card-body,
+.recommendation-card .tags {
+  overflow: visible;
+}
+
+.similarity-section {
+  margin: 70px auto 40px;
+  max-width: 1784px;
+  width: calc(100% - 96px);
+}
+
+.similarity-section h2 {
+  color: #fff;
+  font-size: 32px;
+  margin: 0 0 30px;
+}
+
+.similarity-grid {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+
+.similarity-card-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.similarity-card {
+  background-color: #282828;
+  border-radius: 8px;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+}
+
+.similarity-card:hover {
+  transform: translateY(-4px);
+}
+
+.similarity-card img {
+  aspect-ratio: 1 / 1;
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+.similarity-card-body {
+  padding: 18px;
+}
+
+.similarity-card-body h5 {
+  color: #fff;
+  font-size: 20px;
+  line-height: 1.25;
+  margin: 0 0 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.similarity-card-body p {
+  color: #fff;
+  font-size: 16px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .card-container {
+    width: calc(100vw - 32px);
+  }
+
+  .recommendation-header,
+  .recommendation-grid {
+    width: calc(100% - 32px);
+  }
+
+  .recommendation-header {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 30px;
+  }
+
+  .recommendation-title {
+    font-size: 34px;
+  }
+
+  .recommendation-actions,
+  .recommendation-action-button {
+    width: 100%;
+  }
+
+  .recommendation-action-button {
+    justify-content: center;
+  }
+
+  .recommendation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .similarity-section {
+    width: calc(100% - 32px);
+  }
+
+  .similarity-section h2 {
+    font-size: 24px;
+  }
+
+  .similarity-grid {
+    grid-template-columns: 1fr;
+  }
 }
