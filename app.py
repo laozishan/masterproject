@@ -90,17 +90,17 @@ class LoginForm(FlaskForm):
 
 class Artwork(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), nullable=False)
-    artistName = db.Column(db.String(80), nullable=False)
-    image = db.Column(db.String(300), nullable=False)
-    genres = db.Column(db.String(120))
-    styles = db.Column(db.String(120))
+    title = db.Column(db.String(300), nullable=False)
+    artistName = db.Column(db.String(200), nullable=False)
+    image = db.Column(db.String(500), nullable=False)
+    genres = db.Column(db.Text)
+    styles = db.Column(db.Text)
     description = db.Column(db.Text)
     completitionYear = db.Column(db.String(20))
-    media = db.Column(db.String(120))
-    location = db.Column(db.String(200))
-    galleries = db.Column(db.String(300))
-    tags = db.Column(db.String(300))
+    media = db.Column(db.Text)
+    location = db.Column(db.Text)
+    galleries = db.Column(db.Text)
+    tags = db.Column(db.Text)
 
 
 class Favorite(db.Model):
